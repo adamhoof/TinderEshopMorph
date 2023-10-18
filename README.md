@@ -53,7 +53,6 @@ FOREIGN KEY (user_id) REFERENCES users(user_id),
 FOREIGN KEY (category_name) REFERENCES categories(name)
 );
 
-
 CREATE INDEX idx_user_preferences_category_name ON user_preferences(category_name);
 CREATE INDEX idx_user_bought_items_user_id ON user_bought_items(user_id);
 
