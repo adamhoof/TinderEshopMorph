@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration form</title>
+    <link rel="stylesheet" href="../css/registration.css">
+    <script src="../js/registration.js"></script>
+</head>
+
+<body>
+<form method="post" action="../../backend/registration.php" name="registration_form" onsubmit="return validateForm()">
+
+    <div class="input_field_with_label">
+        <label for="name_input">* Name:
+            <input id="name_input" type="text" class="input_field" name="name" tabindex="1" autofocus>
+        </label>
+    </div>
+
+
+    <div class="input_field_with_label">
+        <label for="guid_input">* GUID:
+            <input id="guid_input" type="text" class="input_field" name="guid">
+        </label>
+    </div>
+
+    <div class="input_field_with_label">
+        <label for="password_input">* Password:
+            <input id="password_input" type="password" class="input_field" name="password"
+                   oninput="instantPasswordCheck()">
+        </label>
+    </div>
+
+    <div class="input_field_with_label">
+        <label for="verify_password_input">* Password again:
+            <input id="verify_password_input" type="password" class="input_field" name="password_verify"
+                   oninput="instantPasswordCheck()">
+        </label>
+        <span id="password_error" class="error"></span>
+    </div>
+
+    <div class="input_field_with_label">
+        <label for="address_input">* Address:
+            <input id="address_input" type="text" class="input_field" name="address">
+        </label>
+    </div>
+
+    <div class="input_field_with_label">
+        <label for="payment_card_input">* Payment card number:
+            <input id="payment_card_input" type="text" class="input_field" name="payment_card">
+        </label>
+    </div>
+
+    <div class="input_field_with_label">
+        <label for="profile_picture">* Profile picture:
+            <input id="profile_picture" type="file" class="image" name="profile_picture" accept="image/png">
+        </label>
+    </div>
+
+    <button type="submit">Send</button>
+    <p id="required_fields_disclaimer">Required fields are marked by *</p>
+
+</form>
+</body>
+</html>
