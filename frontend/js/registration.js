@@ -23,6 +23,7 @@ function validateForm() {
         if (input.value === '') {
             // If the field is empty, add the 'empty-field' class
             input.classList.add('empty-field');
+            input.placeholder = "Please fill me"
             // Set formIsValid to false if any field is empty
             formIsValid = false;
         } else {
