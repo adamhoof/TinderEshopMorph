@@ -1,0 +1,7 @@
+.empty-field {
+    border-color: red;
+}
+
+.input_field_with_label{
+    padding: 10px 10px 10px 10px;
+}

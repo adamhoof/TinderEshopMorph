@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wantit Login</title>
+    <link rel="stylesheet" href="../css/login.css">
+    <script src="../js/login.js"></script>
+</head>
+<body>
+
+<form method="post" action="login.html" name="login_form" onsubmit="return validateForm()">
+
+    <div class="input_field_with_label">
+        <label for="guid_input">GUID:
+            <input id="guid_input" type="text" class="input_field" name="guid" tabindex="1" autofocus>
+        </label>
+    </div>
+
+    <div class="input_field_with_label">
+        <label for="password_input">Password:
+            <input id="password_input" type="password" class="input_field" name="password_input">
+        </label>
+    </div>
+
+    <button type="submit">Send</button>
+</form>
+
+
+</body>
+</html>
