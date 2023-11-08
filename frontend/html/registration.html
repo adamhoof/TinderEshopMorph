@@ -4,18 +4,15 @@
     <meta charset="UTF-8">
     <title>Registration form</title>
     <link rel="stylesheet" href="../css/registration.css">
-    <script src="../js/registration.js"></script>
 </head>
-
 <body>
-<form method="post" action="../../backend/registration.php" name="registration_form" onsubmit="return validateForm()">
+<form id="registration_form" method="post" action="../../backend/registration.php">
 
     <div class="input_field_with_label">
         <label for="name_input">* Name:
             <input id="name_input" type="text" class="input_field" name="name" tabindex="1" autofocus>
         </label>
     </div>
-
 
     <div class="input_field_with_label">
         <label for="guid_input">* GUID:
@@ -25,15 +22,13 @@
 
     <div class="input_field_with_label">
         <label for="password_input">* Password:
-            <input id="password_input" type="password" class="input_field" name="password"
-                   oninput="instantPasswordCheck()">
+            <input id="password_input" type="password" class="input_field" name="password">
         </label>
     </div>
 
     <div class="input_field_with_label">
         <label for="verify_password_input">* Password again:
-            <input id="verify_password_input" type="password" class="input_field" name="password_verify"
-                   oninput="instantPasswordCheck()">
+            <input id="verify_password_input" type="password" class="input_field" name="password_verify">
         </label>
         <span id="password_error" class="error"></span>
     </div>
@@ -60,5 +55,6 @@
     <p id="required_fields_disclaimer">Required fields are marked by *</p>
 
 </form>
+<script src="../js/registration.js"></script>
 </body>
 </html>

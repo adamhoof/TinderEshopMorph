@@ -1,47 +1,51 @@
-function instantPasswordCheck() {
-    const password = document.getElementById('password_input').value;
-    const verifyPassword = document.getElementById('verify_password_input').value;
+document.addEventListener('DOMContentLoaded', function() {
+    var registrationForm = document.getElementById('registration_form');
+    var passwordInput = document.getElementById('password_input');
+    var verifyPasswordInput = document.getElementById('verify_password_input');
+    var inputFields = document.querySelectorAll('input:not([type="file"])');
 
-    // Check if passwords match
-    if (password !== verifyPassword) {
-        document.getElementById('password_error').textContent = 'Passwords do not match.';
-    } else {
-        // Clear any previous error message if passwords now match or fields are empty
-        document.getElementById('password_error').textContent = '';
-    }
-}
+    registrationForm.addEventListener('submit', function(event) {
+        var isValid = validateForm();
+        if (!isValid) {
+            event.preventDefault(); // Prevent form submission if the validation fails
+        }
+    });
 
-// Other functions remain the same
+    passwordInput.addEventListener('input', instantPasswordCheck);
+    verifyPasswordInput.addEventListener('input', instantPasswordCheck);
 
-function validateForm() {
-    const inputFields = document.querySelectorAll('input:not([type="file"])');
+    function instantPasswordCheck() {
+        const password = passwordInput.value;
+        const verifyPassword = verifyPasswordInput.value;
 
-    let formIsValid = true;
-
-    for (let i = 0; i < inputFields.length; i++) {
-        let input = inputFields[i];
-        if (input.value === '') {
-            // If the field is empty, add the 'empty-field' class
-            input.classList.add('empty-field');
-            input.placeholder = "Please fill me"
-            // Set formIsValid to false if any field is empty
-            formIsValid = false;
+        // Check if passwords match
+        if (password !== verifyPassword) {
+            document.getElementById('password_error').textContent = 'Passwords do not match.';
         } else {
-            // If the field is not empty, remove the 'empty-field' class (if it was previously added)
-            input.classList.remove('empty-field');
+            // Clear any previous error message if passwords now match or fields are empty
+            document.getElementById('password_error').textContent = '';
         }
     }
 
+    function validateForm() {
+        let formIsValid = true;
 
-    // Other validation checks like password matching
-    const password = document.getElementById('password_input').value;
-    const verifyPassword = document.getElementById('verify_password_input').value;
-    if (password !== verifyPassword) {
-        formIsValid = false;  // Set formIsValid to false if passwords do not match
-    } else {
-        document.getElementById('password_error').textContent = '';
+        inputFields.forEach(function(input) {
+            if (input.value === '') {
+                // If the field is empty, add the 'empty-field' class
+                input.classList.add('empty-field');
+                input.placeholder = "Please fill me";
+                // Set formIsValid to false if any field is empty
+                formIsValid = false;
+            } else {
+                // If the field is not empty, remove the 'empty-field' class (if it was previously added)
+                input.classList.remove('empty-field');
+            }
+        });
+
+        // Additional validation checks can be added here
+        // ...
+
+        return formIsValid;
     }
-
-    // Return the formIsValid value to determine whether the form should be submitted
-    return formIsValid;
-}
+});
