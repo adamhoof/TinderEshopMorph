@@ -1,4 +1,34 @@
-// Assume we have the following items data
+document.addEventListener('DOMContentLoaded', function() {
+    const buyButton = document.getElementById('buy_button');
+    const sellButton = document.getElementById('sell_button');
+    const userProfileButton = document.getElementById('user_profile_button');
+    const buyItemButton = document.getElementById('buy_item_button');
+    const nextItemButton = document.getElementById('next_item_button');
+    buyButton.addEventListener('click', buyItems);
+    sellButton.addEventListener('click', sellItems);
+    userProfileButton.addEventListener('click', openUserProfile);
+    buyItemButton.addEventListener('click', buyItem);
+    nextItemButton.addEventListener('click', nextItem);
+});
+
+function buyItems() {
+    // Code for buying items
+}
+
+function sellItems() {
+    // Code for selling items
+}
+
+function openUserProfile() {
+    // Code for opening the user profile
+}
+
+function buyItem() {
+    // Code for buying the current item
+}
+
+
+
 let items = [
     { name: "Item 1", price: 10.00, seller: "Seller A", category: "Category 1", image: "image1.jpg" },
     { name: "Item 2", price: 20.00, seller: "Seller B", category: "Category 2", image: "image2.jpg" },
@@ -27,11 +57,6 @@ function nextItem() {
     }
     displayItem(currentItemIndex);
 }
-
-function buyItem() {
-    // Handle buy action (e.g., show a popup)
-}
-
 window.onload = function() {
     /*maybe logic to remember which item was browsed?
     items empty - means first page load, perform request first
