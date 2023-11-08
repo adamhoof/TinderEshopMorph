@@ -1,18 +1,13 @@
-function instantPasswordCheck() {
-    const password = document.getElementById('password_input').value;
-    const verifyPassword = document.getElementById('verify_password_input').value;
+document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.getElementById('login_form');
 
-    // Check if passwords match
-    if (password !== verifyPassword) {
-        document.getElementById('password_error').textContent = 'Passwords do not match.';
-    } else {
-        // Clear any previous error message if passwords now match or fields are empty
-        document.getElementById('password_error').textContent = '';
-    }
-}
-
-// Other functions remain the same
-
+    loginForm.addEventListener('submit', function(event) {
+        const isValid = validateForm();
+        if (!isValid) {
+            event.preventDefault(); // Prevent form submission if the validation fails
+        }
+    });
+});
 function validateForm() {
     const inputFields = document.querySelectorAll('input');
 
