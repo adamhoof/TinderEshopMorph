@@ -3,28 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>Wantit Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/login.css">
     <script src="../js/login.js"></script>
 </head>
 <body>
 
-<form method="post" action="login.html" id="login_form">
+<main>
+    <div class="title">Login</div>
+    <form method="post" action="login.html" id="login_form">
+        <div class="user_details">
 
-    <div class="input_field_with_label">
-        <label for="guid_input">GUID:
-            <input id="guid_input" type="text" class="input_field" name="guid" tabindex="1" autofocus>
-        </label>
-    </div>
+            <div class="input_box">
+                <span class="details">GUID</span>
+                <label for="guid"></label><input type="text" placeholder="Enter your email" name="guid" id="guid">
+            </div>
 
-    <div class="input_field_with_label">
-        <label for="password_input">Password:
-            <input id="password_input" type="password" class="input_field" name="password_input">
-        </label>
-    </div>
+            <div class="input_box">
+                <span class="details">Password</span>
+                <label for="password"></label><input type="password" placeholder="Enter your password" name="password"
+                                                     id="password">
+            </div>
 
-    <button type="submit">Send</button>
-</form>
+            <div class="button">
 
+                <input type="submit" value="Login">
+            </div>
+
+        </div>
+
+
+    </form>
+
+</main>
 
 </body>
+
 </html>
