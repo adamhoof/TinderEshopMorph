@@ -5,11 +5,6 @@
     font-family: "JetBrains Mono", monospace;
 }
 
-.empty-field {
-    border: 3px solid red;
-    border-radius: 5px;
-}
-
 body {
     display: flex;
     flex-direction: column;
@@ -30,16 +25,22 @@ main {
 
 main .title {
     text-align: center;
-    font-size: 7vw;
+    font-size: 5vw;
     font-weight: 500;
     margin-bottom: 20px;
 }
 
 main form .user_details {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     margin-bottom: 15px;
     justify-content: space-between;
+}
+
+form .user_details .input_box {
+    margin-bottom: 15px;
+
 }
 
 form .user_details .input_box input {
@@ -49,7 +50,7 @@ form .user_details .input_box input {
 
 form .button input {
     width: 100%;
-    padding: 5px 0;
+    padding: 10px 0;
     cursor: pointer;
     background: linear-gradient(135deg, rgba(100, 0, 180, 0.5), rgba(150, 0, 50, 0.9));
     border: none;
@@ -57,6 +58,15 @@ form .button input {
     font-size: 18px;
     font-weight: 500;
     border-radius: 5px;
-    margin: 12px 0;
+    margin: 15px 0;
 }
 
+form .button input:hover {
+    opacity: 0.85;
+    transition-duration: 300ms;
+}
+
+.empty_field {
+    border: 3px solid red;
+    border-radius: 5px;
+}

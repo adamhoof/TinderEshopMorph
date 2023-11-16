@@ -2,59 +2,53 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration form</title>
-    <link rel="stylesheet" href="../css/registration.css">
+    <link rel="stylesheet" href="../css/form.css">
+    <script src="../js/registration.js"></script>
 </head>
 <body>
-<form id="registration_form" method="post" action="../../backend/registration.php">
 
-    <div class="input_field_with_label">
-        <label for="name_input">* Name:
-            <input id="name_input" type="text" class="input_field" name="name" tabindex="1" autofocus>
-        </label>
-    </div>
+<main>
+    <div class="title">Register</div>
+    <form method="post" action="registration.html" id="registration_form">
 
-    <div class="input_field_with_label">
-        <label for="guid_input">* GUID:
-            <input id="guid_input" type="text" class="input_field" name="guid">
-        </label>
-    </div>
+        <div class="user_details">
 
-    <div class="input_field_with_label">
-        <label for="password_input">* Password:
-            <input id="password_input" type="password" class="input_field" name="password">
-        </label>
-    </div>
+            <div class="input_box">
+                <span class="details">GUID</span>
+                <label for="guid"></label>
+                <input type="text" name="guid" id="guid" tabindex="1" autofocus>
+            </div>
 
-    <div class="input_field_with_label">
-        <label for="verify_password_input">* Password again:
-            <input id="verify_password_input" type="password" class="input_field" name="password_verify">
-        </label>
-        <span id="password_error" class="error"></span>
-    </div>
+            <div class="input_box">
+                <span class="details">Password</span>
+                <label for="password_input"></label>
+                <input id="password_input" type="password" class="input_field" name="password">
+            </div>
 
-    <div class="input_field_with_label">
-        <label for="address_input">* Address:
-            <input id="address_input" type="text" class="input_field" name="address">
-        </label>
-    </div>
+            <div class="input_box">
+                <span class="details">Password again</span>
+                <label for="verify_password_input"></label>
+                <input id="verify_password_input" type="password" class="input_field" name="password_verify">
+                <span id="password_error" class="error"></span>
+            </div>
 
-    <div class="input_field_with_label">
-        <label for="payment_card_input">* Payment card number:
-            <input id="payment_card_input" type="text" class="input_field" name="payment_card">
-        </label>
-    </div>
+            <div class="input_box">
+                <span class="details">Already have an account? <a href="login.html">Login</a></span>
 
-    <div class="input_field_with_label">
-        <label for="profile_picture">* Profile picture:
-            <input id="profile_picture" type="file" class="image" name="profile_picture" accept="image/png">
-        </label>
-    </div>
+            </div>
 
-    <button type="submit">Send</button>
-    <p id="required_fields_disclaimer">Required fields are marked by *</p>
+            <div class="button">
+                <input type="submit" value="Login">
+            </div>
 
-</form>
-<script src="../js/registration.js"></script>
+        </div>
+
+    </form>
+
+</main>
+
+
 </body>
 </html>
