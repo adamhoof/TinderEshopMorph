@@ -30,7 +30,8 @@ main .title {
     margin-bottom: 20px;
 }
 
-main form .user_details {
+/*common for user details form as well as sell item form*/
+main form .user_details, main form .item_details{
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -38,12 +39,13 @@ main form .user_details {
     justify-content: space-between;
 }
 
-form .user_details .input_box {
+/*common for user details form as well as sell item form*/
+form .user_details .input_box, form .item_details .input_box{
     margin-bottom: 15px;
-
 }
 
-form .user_details .input_box input {
+/*common for user details form as well as sell item form*/
+form .user_details .input_box input, form .item_details .input_box input{
     width: 100%;
     padding: 5px 0;
 }
