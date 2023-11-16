@@ -17,13 +17,13 @@ function validateForm() {
         let input = inputFields[i];
         if (input.value === '') {
             // If the field is empty, add the 'empty-field' class
-            input.classList.add('empty-field');
+            input.classList.add('empty_field');
             input.placeholder = "Please fill me"
             // Set formIsValid to false if any field is empty
             formIsValid = false;
         } else {
             // If the field is not empty, remove the 'empty-field' class (if it was previously added)
-            input.classList.remove('empty-field');
+            input.classList.remove('empty_field');
         }
     }
     return formIsValid;
