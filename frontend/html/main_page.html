@@ -1,27 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Main Page</title>
-  <link rel="stylesheet" href="../css/main_page.css">
-  <script src="../js/main_page.js"></script>
+    <meta charset="UTF-8">
+    <title>Wantit</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/main_page.css">
+    <script src="../js/main_page.js"></script>
 </head>
 <body>
 <nav class="top_nav">
-  <button id="buy_button" onclick="">Buy</button>
-  <button id="sell_button">Sell</button>
-  <button id="user_profile_button">Profile</button>
+    <a href="sell.html">Sell</a>
+    <a href="user_information.html">Profile</a>
 </nav>
 
-<div id="item_display">
-  <img id="item_image" src="" alt="Item image">
-  <h2 id="item_name"></h2>
-  <p id="item_price"></p>
-  <p id="item_seller"></p>
-  <p id="item_category"></p>
-  <button id="buy_item_button">Buy</button>
-  <button id="next_item_button">Next</button>
-</div>
+<main>
+
+    <div class="item_details">
+
+        <div id="item_name" class="item_detail title"></div>
+
+        <div id="item_image" class="item_detail">
+            <img src="bord4.png" alt="Item image">
+        </div>
+
+        <div id="item_price" class="item_detail"></div>
+
+        <div id="item_seller" class="item_detail"></div>
+
+        <div id="item_category" class="item_detail"></div>
+
+        <div class="buttons">
+            <button id="buy_item_button">Buy</button>
+
+            <button id="next_item_button">Next</button>
+        </div>
+
+    </div>
+
+</main>
 
 </body>
 </html>

@@ -1,28 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const buyButton = document.getElementById('buy_button');
-    const sellButton = document.getElementById('sell_button');
-    const userProfileButton = document.getElementById('user_profile_button');
     const buyItemButton = document.getElementById('buy_item_button');
-    const nextItemButton = document.getElementById('next_item_button');
-    buyButton.addEventListener('click', buyItems);
-    sellButton.addEventListener('click', sellItems);
-    userProfileButton.addEventListener('click', openUserProfile);
+    document.getElementById('next_item_button').addEventListener('click', nextItem);
     buyItemButton.addEventListener('click', buyItem);
-    nextItemButton.addEventListener('click', nextItem);
+    /*nextItemButton.addEventListener('click', nextItem);*/
 });
-
-function buyItems() {
-    // Code for buying items
-}
-
-function sellItems() {
-    // Code for selling items
-}
-
-function openUserProfile() {
-    // Code for opening the user profile
-}
-
 function buyItem() {
     // Code for buying the current item
 }
@@ -30,13 +11,13 @@ function buyItem() {
 
 
 let items = [
-    { name: "Item 1", price: 10.00, seller: "Seller A", category: "Category 1", image: "image1.jpg" },
-    { name: "Item 2", price: 20.00, seller: "Seller B", category: "Category 2", image: "image2.jpg" },
-    { name: "Item 3", price: 20.00, seller: "Seller B", category: "Category 2", image: "image2.jpg" },
-    { name: "Item 4", price: 20.00, seller: "Seller B", category: "Category 2", image: "image2.jpg" },
-    { name: "Item 5", price: 20.00, seller: "Seller B", category: "Category 2", image: "image2.jpg" },
-    { name: "Item 6", price: 20.00, seller: "Seller B", category: "Category 2", image: "image2.jpg" },
-    { name: "Item 7", price: 20.00, seller: "Seller B", category: "Category 2", image: "image2.jpg" },
+    { name: "Item 7", price: 20.00, seller: "Seller B", category: ["Category CategoryCategoryCategoryCategoryCategoryCategoryCategoryCategoryCategory 7","Category 7","Category 7","Category 7"], image: "crackhead.jpg" },
+    { name: "Item 1", price: 10.00, seller: "Seller A", category: "Category 1", image: "crackhead.jpg" },
+    { name: "Item 2", price: 20.00, seller: "Seller B", category: "Category 2", image: "crackhead.jpg" },
+    { name: "Item 3", price: 20.00, seller: "Seller B", category: "Category 3", image: "crackhead.jpg" },
+    { name: "Item 4", price: 20.00, seller: "Seller B", category: "Category 4", image: "crackhead.jpg" },
+    { name: "Item 5", price: 20.00, seller: "Seller B", category: "Category 5", image: "crackhead.jpg" },
+    { name: "Item 6", price: 20.00, seller: "Seller B", category: "Category 6", image: "crackhead.jpg" },
 
 ];
 
@@ -47,7 +28,7 @@ function displayItem(index) {
     document.getElementById('item_name').textContent = item.name;
     document.getElementById('item_price').textContent = '$' + item.price.toFixed(2);
     document.getElementById('item_seller').textContent = 'Seller: ' + item.seller;
-    document.getElementById('item_category').textContent = 'Category: ' + item.category;
+    document.getElementById('item_category').textContent = 'Categories: ' + item.category;
 }
 
 function nextItem() {
