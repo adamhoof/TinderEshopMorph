@@ -1,30 +1,49 @@
 <?php
-// Retrieve form data
-$name = $_POST['name'];
-$guid = $_POST["guid"];
-$password = $_POST['password'];
-$address = $_POST['address'];
-$payment_card_number = $_POST['payment_card_number'];
+if (isset($_POST["login"])) {
+    echo "cock";
+}
 
-// Hash the password for storage
-$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+/*if (!isset($_POST["submit"])) {
+    echo "Not a post method";
+}*/
 
-$conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase");
+
+$guid = isset($_POST["guid"]) ? $_POST["guid"] : "";
+$password = isset($_POST["password"]) ? $_POST["password"] : "";
+$password_verify = isset($_POST["password_verify"]) ? $_POST["password_verify"] : "";
+
+if (empty($guid) || empty($password) || empty($password_verify)) {
+    echo "Form data is missing";
+    exit();
+}
+
+if ($password != $password_verify) {
+    echo "Passwords do not match";
+    exit();
+}
+echo "Hashing password <br>";
+
+$password_hash = password_hash($password, PASSWORD_DEFAULT);
+
+echo "Password hashed";
+
+$conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
 if ($conn->connect_error) {
+    echo "FUCKBASE";
     die("Connection failed: " . $conn->connect_error);
 }
 
-$stmt = $conn->prepare("INSERT INTO users (name, guid, email, password) VALUES (?, ?, ?, ?)");
-$stmt->bind_param("ssss", $name, $surname, $email, $hashed_password);
+echo "Connected successfully";
 
-// Execute the statement
+$stmt = $conn->prepare("INSERT INTO users (guid, password_hash) VALUES (?, ?)");
+$stmt->bind_param("ss", $guid, $password_hash);
+
 if ($stmt->execute()) {
     echo "New record created successfully";
 } else {
     echo "Error: " . $stmt->error;
 }
 
-// Close the statement and connection
 $stmt->close();
 $conn->close();
 ?>
