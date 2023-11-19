@@ -46,7 +46,10 @@ main .item_details .item_detail img {
 }
 
 #item_category {
+    width: 90%;
+    height: 60px;
     overflow-wrap: anywhere;
+    overflow: scroll;
 }
 
 main .item_details .buttons {
