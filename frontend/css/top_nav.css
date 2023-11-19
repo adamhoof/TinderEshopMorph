@@ -1,0 +1,37 @@
+.top_nav {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+    padding: 10px 0;
+    margin-bottom: 20px;
+}
+
+.top_nav a {
+    float: left;
+    font-size: 16px;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(100, 0, 180, 0.5), rgba(150, 0, 50, 0.9));
+    padding: 100px;
+}
+
+main {
+    max-width: 700px;
+    width: 100%;
+    background: floralwhite;
+    padding: 25px 30px;
+    border-radius: 7px;
+}
