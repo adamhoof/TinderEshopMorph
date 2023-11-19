@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/top_nav.css">
     <link rel="stylesheet" href="../css/form.css">
+    <link rel="stylesheet" href="../css/user_information.css">
     <script src="../js/user_information.js"></script>
     <title>User info</title>
 </head>
@@ -16,10 +17,13 @@
     <a href="main_page.html">Home</a>
     <a href="sell.html">Sell</a>
     <a href="transaction_history.html">Transaction history</a>
-    <a id="edit" href="#">Edit</a>
 </nav>
 
 <main>
+        <div id="edit_enable_box">
+            <label for="edit_checkbox">Enable editing</label>
+            <input id="edit_checkbox" type="checkbox">
+        </div>
 
     <div class="title">User info</div>
     <form method="post" action="user_information.html">
@@ -30,19 +34,22 @@
                 <label for="profile_pic">Profile picture</label>
                 <br>
                 <img src="crackhead.png" alt="profile picture">
-                <input type="file" name="sell_item_pic" id="profile_pic" accept="image/png">
+                <input type="file" name="sell_item_pic" id="profile_pic" accept="image/png" class="disableable" tabindex="1" autofocus>
             </div>
 
             <div class="input_box">
                 <label for="guid">GUID</label>
-                <input type="text" name="guid" id="guid" tabindex="1" autofocus>
+                <input type="text" name="guid" id="guid" autofocus class="disableable" tabindex="2">
 
             </div>
 
             <div class="input_box">
                 <label for="password_input">Password</label>
-                <input id="password_input" type="password" class="input_field" name="password">
+                <input id="password_input" type="password" class="input_field disableable" name="password" tabindex="3">
+            </div>
 
+            <div class="button">
+                <input type="submit" value="Save" class="disableable" id="save_button">
             </div>
 
         </div>
