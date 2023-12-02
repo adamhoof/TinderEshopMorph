@@ -5,8 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var inputFields = document.querySelectorAll('input:not([type="file"])');
 
     registrationForm.addEventListener('submit', function(event) {
-        var isValid = validateForm();
-        if (!isValid) {
+        if (!formValid()) {
             event.preventDefault(); // Prevent form submission if the validation fails
         }
     });
@@ -27,7 +26,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function validateForm() {
+    function formValid() {
+
+        if (passwordInput.value !== verifyPasswordInput.value) {
+            document.getElementById('password_error').textContent = 'Passwords do not match.';
+            return false;
+        }
         let formIsValid = true;
 
         inputFields.forEach(function(input) {
@@ -42,9 +46,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 input.classList.remove('empty_field');
             }
         });
-
-        // Additional validation checks can be added here
-        // ...
 
         return formIsValid;
     }
