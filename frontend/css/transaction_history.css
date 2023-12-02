@@ -1,0 +1,43 @@
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(100, 0, 180, 0.5), rgba(150, 0, 50, 0.9));
+    padding: 100px;
+}
+
+main {
+    max-width: 700px;
+    min-width: 500px;
+    width: 100%;
+    background: floralwhite;
+    padding: 25px 30px;
+    border-radius: 7px;
+}
+
+th, td {
+    padding: 15px;
+    border-bottom: 1px solid black;
+    text-align: center;
+    overflow: auto;
+    overflow-wrap: anywhere;
+}
+
+.purchase_details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+
+}
+
+@media screen and (max-width: 500px) {
+    th, td {
+        font-size: 3vw;
+        padding: 5px;
+    }
+
+}
