@@ -19,10 +19,10 @@ if (empty($user->guid)) {
     die();
 }
 
-if(isset($_POST["submit"])){
+if (isset($_POST["submit"])) {
     $updatedUser = User::emptyUser();
 
-    if(!isset($_POST["guid"])){
+    if (!isset($_POST["guid"])) {
         $errors["guid"] = "GUID is required field";
     }
 
@@ -45,7 +45,7 @@ if(isset($_POST["submit"])){
         $errors["guid"] = "User with this GUID already exists";
     }
 
-    if(empty($errors)){
+    if (empty($errors)) {
         updateUser($user->guid, $updatedUser);
         $_SESSION["guid"] = $updatedUser->guid;
         //TODO: change pic location
@@ -93,20 +93,22 @@ if(isset($_POST["submit"])){
             <div class="input_box">
                 <label for="profile_pic">Profile picture</label>
                 <br>
-                <img src="<?php echo htmlspecialchars($user->pictureUrl)?>" alt="profile picture">
-                <input type="file" name="sell_item_pic" id="profile_pic" accept="image/png" class="disableable" tabindex="1" autofocus>
+                <img src="<?php echo htmlspecialchars($user->pictureUrl) ?>" alt="profile picture">
+                <input type="file" name="sell_item_pic" id="profile_pic" accept="image/png" class="disableable"
+                       tabindex="1" autofocus>
             </div>
 
             <div class="input_box">
                 <label for="guid">GUID</label>
-                <input type="text" name="guid" id="guid" autofocus class="disableable" tabindex="2" value="<?php echo htmlspecialchars($user->guid);?>">
-                <?php if(isset($errors["guid"])) echo "<p class='error'>" . htmlspecialchars($errors["guid"]) . "</p>"; ?>
+                <input type="text" name="guid" id="guid" autofocus class="disableable" tabindex="2"
+                       value="<?php echo htmlspecialchars($user->guid); ?>">
+                <?php if (isset($errors["guid"])) echo "<p class='error'>" . htmlspecialchars($errors["guid"]) . "</p>"; ?>
             </div>
 
             <div class="input_box">
                 <label for="password_input">Password</label>
                 <input id="password_input" type="password" class="input_field disableable" name="password" tabindex="3">
-                <?php if(isset($errors["password"])) echo "<p class='error'>" . htmlspecialchars($errors["password"]) . "</p>"; ?>
+                <?php if (isset($errors["password"])) echo "<p class='error'>" . htmlspecialchars($errors["password"]) . "</p>"; ?>
             </div>
 
             <div class="button">

@@ -28,7 +28,7 @@ if (isset($_POST["submit"])) {
 
     if (empty($errors)) {
         $userProfile = queryUser($user->guid);
-        if (empty($userProfile->guid )) {
+        if (empty($userProfile->guid)) {
             $errors["guid"] = "User with this GUID does not exist";
         } else {
             if (password_verify($user->password, $userProfile->password)) {
