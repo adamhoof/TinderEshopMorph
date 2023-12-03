@@ -12,15 +12,16 @@
 <body>
 
 <nav class="top_nav">
-    <a href="main_page.html">Home</a>
-    <a href="user_information.html">User info</a>
-    <a href="transaction_history.html">Transaction history</a>
+    <a href="main_page.php">Home</a>
+    <a href="user_information.php">User info</a>
+    <a href="transaction_history.php">Transaction history</a>
+    <a href="logout.php">Logout</a>
 </nav>
 
 <main>
 
     <div class="title">Sell your item!</div>
-    <form method="post" action="sell.html" id="sell_form">
+    <form method="post" action="sell.php" id="sell_form">
 
         <div class="item_details">
 

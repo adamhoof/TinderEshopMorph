@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,9 +14,16 @@
 </head>
 <body>
 <nav class="top_nav">
-    <a href="sell.html">Sell</a>
-    <a href="user_information.html">User info</a>
-    <a href="transaction_history.html">Transaction history</a>
+    <a href="sell.php">Sell</a>
+    <a href="user_information.php">User info</a>
+    <a href="transaction_history.php">Transaction history</a>
+    <?php
+    if (isset($_SESSION["guid"])) {
+        echo '<a href="logout.php">Logout</a>';
+    } else {
+        echo '<a href="login.php">Login</a>';
+    }
+    ?>
 </nav>
 
 <main>

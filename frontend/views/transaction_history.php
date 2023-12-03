@@ -11,9 +11,10 @@
 <body>
 
 <nav class="top_nav">
-    <a href="main_page.html">Home</a>
-    <a href="sell.html">Sell</a>
-    <a href="user_information.html">User info</a>
+    <a href="main_page.php">Home</a>
+    <a href="sell.php">Sell</a>
+    <a href="user_information.php">User info</a>
+    <a href="logout.php">Logout</a>
 </nav>
 
 <main>
