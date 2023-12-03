@@ -37,10 +37,6 @@ if(isset($_POST["submit"])){
         $errors["password"] = "Password must be between 3 and 255 characters long";
     }
 
-    if($data["password"] !== $data["password_verify"]){
-        $errors["password_match"] = "Passwords do not match";
-    }
-
     if(userExists($data["guid"])){
         $errors["guid"] = "User with this GUID already exists";
     }
