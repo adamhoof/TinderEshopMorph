@@ -12,6 +12,7 @@ if (!isset($_SESSION["guid"])) {
 // Retrieve user data from the database
 $guid = $_SESSION["guid"];
 $user = queryUser($guid);
+$errors = array();
 
 if (empty($user->guid)) {
     header("location:login.php");
@@ -19,12 +20,14 @@ if (empty($user->guid)) {
 }
 
 if(isset($_POST["submit"])){
+    $updatedUser = User::emptyUser();
+
     if(!isset($_POST["guid"])){
         $errors["guid"] = "GUID is required field";
     }
 
-    $data["guid"] = $_POST["guid"];
-    if (!inputLengthValid($data["guid"])) {
+    $updatedUser->guid = $_POST["guid"];
+    if (!inputLengthValid($updatedUser->guid)) {
         $errors["guid"] = "GUID must be between 3 and 255 characters long";
     }
 
@@ -32,17 +35,18 @@ if(isset($_POST["submit"])){
         $errors["password"] = "Password is required field";
     }
 
-    $data["password"] = $_POST["password"];
-    if (!inputLengthValid($data["password"])) {
+    $updatedUser->password = $_POST["password"];
+    if (!inputLengthValid($updatedUser->password)) {
         $errors["password"] = "Password must be between 3 and 255 characters long";
     }
 
-    if(userExists($data["guid"])){
+    $potentiallyExistingUser = queryUser($updatedUser->guid);
+    if (!empty($potentiallyExistingUser->guid) && $potentiallyExistingUser->guid !== $user->guid) {
         $errors["guid"] = "User with this GUID already exists";
     }
 
     if(empty($errors)){
-        registerUser($data["guid"], $data["password"]);
+        updateUser($user);
         header("location:userDataUpdateSuccessful.php");
         die();
     }
@@ -77,7 +81,7 @@ if(isset($_POST["submit"])){
 
         <div id="edit_enable_box">
             <label for="edit_checkbox">Enable editing</label>
-            <input id="edit_checkbox" type="checkbox">
+            <input id="edit_checkbox" type="checkbox" name="enable_edit">
         </div>
 
         <div class="title">User info</div>
@@ -100,7 +104,7 @@ if(isset($_POST["submit"])){
             <div class="input_box">
                 <label for="password_input">Password</label>
                 <input id="password_input" type="password" class="input_field disableable" name="password" tabindex="3">
-                <?php if(isset($errors["guid"])) echo "<p class='error'>" . htmlspecialchars($errors["guid"]) . "</p>"; ?>
+                <?php if(isset($errors["password"])) echo "<p class='error'>" . htmlspecialchars($errors["password"]) . "</p>"; ?>
             </div>
 
             <div class="button">

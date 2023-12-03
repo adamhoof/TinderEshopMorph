@@ -35,7 +35,7 @@ function queryUser($guid) : User {
 
     $stmt->execute();
 
-    $user = new User("", "", "");
+    $user = User::emptyUser();
     $stmt->bind_result($user->guid, $user->password, $user->pictureUrl);
 
     if ($stmt->fetch()) {
@@ -50,7 +50,7 @@ function queryUser($guid) : User {
         return User::emptyUser();
     }
 }
-function registerUser($guid, $password): void
+function registerUser(User $user): void
 {
     $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
     if ($conn->connect_error) {
@@ -58,10 +58,11 @@ function registerUser($guid, $password): void
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $password_hash = password_hash($password, PASSWORD_DEFAULT);
+    $password_hash = password_hash($user->password, PASSWORD_DEFAULT);
     $picUrl = "d";
+    $user->pictureUrl = $picUrl;
     $stmt = $conn->prepare("INSERT INTO users (guid, password, picture_picture_url) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $guid, $password_hash, $picUrl);
+    $stmt->bind_param("sss", $user->guid, $password_hash, $user->pictureUrl);
 
     if ($stmt->execute()) {
         echo "New record created successfully";
@@ -71,4 +72,14 @@ function registerUser($guid, $password): void
 
     $stmt->close();
     $conn->close();
+}
+
+function updateUser($guid):void {
+    $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
+    if ($conn->connect_error) {
+        echo "FUCKBASE";
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+
 }

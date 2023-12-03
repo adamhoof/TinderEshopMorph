@@ -4,10 +4,7 @@ include_once "../../backend/database.php";
 
 session_start();
 
-$data = array(
-    "guid" => "",
-    "password" => ""
-);
+$user = User::emptyUser();
 $errors = array();
 
 if (isset($_POST["submit"])) {
@@ -15,8 +12,8 @@ if (isset($_POST["submit"])) {
         $errors["guid"] = "GUID is required field";
     }
 
-    $data["guid"] = $_POST["guid"];
-    if (!inputLengthValid($data["guid"])) {
+    $user->guid = $_POST["guid"];
+    if (!inputLengthValid($user->guid)) {
         $errors["guid"] = "GUID must be between 3 and 255 characters long";
     }
 
@@ -24,18 +21,18 @@ if (isset($_POST["submit"])) {
         $errors["password"] = "Password is required field";
     }
 
-    $data["password"] = $_POST["password"];
-    if (!inputLengthValid($data["password"])) {
+    $user->password = $_POST["password"];
+    if (!inputLengthValid($user->password)) {
         $errors["password"] = "Password must be between 3 and 255 characters long";
     }
 
     if (empty($errors)) {
-        $user = queryUser($data["guid"]);
-        if (empty($user->guid )) {
+        $userProfile = queryUser($user->guid);
+        if (empty($userProfile->guid )) {
             $errors["guid"] = "User with this GUID does not exist";
         } else {
-            if (password_verify($data["password"], $user->password)) {
-                $_SESSION["guid"] = $data["guid"];
+            if (password_verify($user->password, $userProfile->password)) {
+                $_SESSION["guid"] = $user->guid;
                 header("location:../../frontend/views/main_page.php");
             } else {
                 $errors["password"] = "Password is incorrect";
@@ -65,7 +62,7 @@ if (isset($_POST["submit"])) {
             <div class="input_box">
                 <label for="guid">GUID</label>
                 <input type="text" name="guid" id="guid" tabindex="1" autofocus
-                       value="<?php echo htmlspecialchars($data['guid']); ?>">
+                       value="<?php echo htmlspecialchars($user->guid); ?>">
                 <?php if (isset($errors['guid'])) echo "<p class='error'>" . htmlspecialchars($errors['guid']) . "</p>"; ?>
             </div>
 

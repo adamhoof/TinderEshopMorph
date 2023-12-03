@@ -3,11 +3,7 @@
 include_once "../../backend/basicRequirementsValidator.php";
 include_once "../../backend/database.php";
 
-$data = array(
-    "guid" => "",
-    "password" => "",
-    "password_verify" => ""
-);
+$user = User::emptyUser();
 
 $errors = array();
 
@@ -16,8 +12,8 @@ if(isset($_POST["submit"])){
         $errors["guid"] = "GUID is required field";
     }
 
-    $data["guid"] = $_POST["guid"];
-    if (!inputLengthValid($data["guid"])) {
+    $user->guid = $_POST["guid"];
+    if (!inputLengthValid($user->guid)) {
         $errors["guid"] = "GUID must be between 3 and 255 characters long";
     }
 
@@ -25,8 +21,8 @@ if(isset($_POST["submit"])){
         $errors["password"] = "Password is required field";
     }
 
-    $data["password"] = $_POST["password"];
-    if (!inputLengthValid($data["password"])) {
+    $user->password = $_POST["password"];
+    if (!inputLengthValid($user->password)) {
         $errors["password"] = "Password must be between 3 and 255 characters long";
     }
 
@@ -34,21 +30,21 @@ if(isset($_POST["submit"])){
         $errors["password_verify"] = "Password verify is required field";
     }
 
-    $data["password_verify"] = $_POST["password_verify"];
-    if (!inputLengthValid($data["password_verify"])) {
+    $passwordVerify = $_POST["password_verify"];
+    if (!inputLengthValid($passwordVerify)) {
         $errors["password_verify"] = "Password verify must be between 3 and 255 characters long";
     }
 
-    if($data["password"] !== $data["password_verify"]){
+    if($user->password !== $passwordVerify){
         $errors["password_match"] = "Passwords do not match";
     }
 
-    if(userExists($data["guid"])){
+    if(userExists($user->guid)){
         $errors["guid"] = "User with this GUID already exists";
     }
 
     if(empty($errors)){
-        registerUser($data["guid"], $data["password"]);
+        registerUser($user);
         header("location:../../backend/registrationSuccessful.php");
         die();
     }
@@ -78,7 +74,7 @@ if(isset($_POST["submit"])){
                 <span class="details">GUID</span>
                 <label for="guid"></label>
 
-                <input type="text" name="guid" id="guid" tabindex="1" autofocus value="<?php echo htmlspecialchars($data['guid']); ?>">
+                <input type="text" name="guid" id="guid" tabindex="1" autofocus value="<?php echo htmlspecialchars($user->guid); ?>">
                 <?php if (isset($errors['guid'])) echo "<p class='error'>" . htmlspecialchars($errors['guid']) . "</p>"; ?>            </div>
 
             <div class="input_box">
