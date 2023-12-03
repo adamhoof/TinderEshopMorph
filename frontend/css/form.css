@@ -72,3 +72,15 @@ form .button input:hover {
     font-weight: 500;
     margin-bottom: 10px;
 }
+
+form .variable_border_red {
+    border: 3px solid red;
+    border-radius: 5px;
+    outline: none;
+}
+
+form .variable_border_green {
+    border: 3px solid green;
+    border-radius: 5px;
+    outline: none;
+}

@@ -1,4 +1,27 @@
 document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('guid').addEventListener('input', function() {
+        const guid = this.value;
+        fetch('../../backend/check_guid.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'guid=' + encodeURIComponent(guid)
+        })
+            .then(response => response.text())
+            .then(data => {
+                if (data === 'exists' || this.value.length < 3 || this.value.length > 255) {
+                    document.getElementById('guid').classList.remove("variable_border_green");
+                    document.getElementById('guid').classList.add("variable_border_red");
+                } else {
+                    document.getElementById('guid').classList.remove("variable_border_red");
+                    document.getElementById('guid').classList.add("variable_border_green");
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+
     var registrationForm = document.getElementById('registration_form');
     var passwordInput = document.getElementById('password_input');
     var verifyPasswordInput = document.getElementById('verify_password_input');
