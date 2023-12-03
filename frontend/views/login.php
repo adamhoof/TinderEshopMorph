@@ -74,7 +74,7 @@ if (isset($_POST["submit"])) {
             </div>
 
             <div class="input_box">
-                <span class="details">Do not have an account? <a href="registration_form.php">Register</a></span>
+                <span class="details">Do not have an account? <a href="registration.php">Register</a></span>
 
             </div>
 

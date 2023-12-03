@@ -66,7 +66,7 @@ if(isset($_POST["submit"])){
 
 <main>
     <div class="title">Register</div>
-    <form method="post" action="registration_form.php" id="registration_form">
+    <form method="post" action="registration.php" id="registration_form">
 
         <div class="user_details">
 
