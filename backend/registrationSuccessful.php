@@ -16,7 +16,7 @@
 
     <h1>Registration successful</h1>
     <p>Thank you for registering!</p>
-    <a href="../frontend/views/login.html">Login</a>
+    <a href="../frontend/views/login.php">Login</a>
 
 </main>
 

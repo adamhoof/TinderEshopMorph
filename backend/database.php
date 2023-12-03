@@ -1,6 +1,6 @@
 <?php
-
-function userAlreadyExists($guid) : bool
+include_once "user.php";
+function userExists($guid) : bool
 {
     $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
     if ($conn->connect_error) {
@@ -21,6 +21,34 @@ function userAlreadyExists($guid) : bool
     $conn->close();
 
     return $userExists;
+}
+
+function queryUser($guid) : User {
+    $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
+    if ($conn->connect_error) {
+        //TODO: notify user?
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    $stmt = $conn->prepare("SELECT guid, password, picture_picture_url FROM users WHERE guid = ?");
+    $stmt->bind_param("s", $guid);
+
+    $stmt->execute();
+
+    $user = new User("", "", "");
+    $stmt->bind_result($user->guid, $user->password, $user->pictureUrl);
+
+    if ($stmt->fetch()) {
+        // User found, return the User object
+        $stmt->close();
+        $conn->close();
+        return $user;
+    } else {
+        // No user found
+        $stmt->close();
+        $conn->close();
+        return User::emptyUser();
+    }
 }
 function registerUser($guid, $password): void
 {

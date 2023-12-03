@@ -1,7 +1,7 @@
 <?php
 
-include "../../backend/basicRequirementsValidator.php";
-include "../../backend/database.php";
+include_once "../../backend/basicRequirementsValidator.php";
+include_once "../../backend/database.php";
 
 $data = array(
     "guid" => "",
@@ -19,10 +19,6 @@ if(isset($_POST["submit"])){
     $data["guid"] = $_POST["guid"];
     if (!inputLengthValid($data["guid"])) {
         $errors["guid"] = "GUID must be between 3 and 255 characters long";
-    }
-
-    if (!isset($_POST["password"])) {
-        $errors["password"] = "Password is required field";
     }
 
     if (!isset($_POST["password"])) {
@@ -47,13 +43,14 @@ if(isset($_POST["submit"])){
         $errors["password_match"] = "Passwords do not match";
     }
 
-    if(userAlreadyExists($data["guid"])){
+    if(userExists($data["guid"])){
         $errors["guid"] = "User with this GUID already exists";
     }
 
     if(empty($errors)){
         registerUser($data["guid"], $data["password"]);
         header("location:../../backend/registrationSuccessful.php");
+        die();
     }
 }
 
@@ -101,7 +98,7 @@ if(isset($_POST["submit"])){
             </div>
 
             <div class="input_box">
-                <span class="details">Already have an account? <a href="login.html">Login</a></span>
+                <span class="details">Already have an account? <a href="login.php">Login</a></span>
 
             </div>
 
