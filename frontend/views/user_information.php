@@ -46,8 +46,10 @@ if(isset($_POST["submit"])){
     }
 
     if(empty($errors)){
-        updateUser($user);
-        header("location:userDataUpdateSuccessful.php");
+        updateUser($user->guid, $updatedUser);
+        $_SESSION["guid"] = $updatedUser->guid;
+        //TODO: change pic location
+        header("location:../../backend/userDataUpdateSuccessful.php");
         die();
     }
 }

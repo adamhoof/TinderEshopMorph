@@ -74,12 +74,19 @@ function registerUser(User $user): void
     $conn->close();
 }
 
-function updateUser($guid):void {
+function updateUser($currentGuid, User $user):void {
     $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
     if ($conn->connect_error) {
         echo "FUCKBASE";
         die("Connection failed: " . $conn->connect_error);
     }
 
+    $passwordHash = password_hash($user->password, PASSWORD_DEFAULT);
 
+    $stmt = $conn->prepare("UPDATE users SET guid = ?, password = ?, picture_picture_url = ? WHERE guid = ?");
+    $stmt->bind_param("ssss", $user->guid, $passwordHash, $user->pictureUrl, $currentGuid);
+    $stmt->execute();
+
+    $stmt->close();
+    $conn->close();
 }
