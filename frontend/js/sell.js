@@ -10,7 +10,6 @@ function addCategoryToSelectedCategories() {
 
     if (selectedCategoriesCount > 3) {
         //TODO: add error message
-        // Prevent increment as addition is not allowed
         return;
     }
 
@@ -20,10 +19,12 @@ function addCategoryToSelectedCategories() {
     createPhysicalRepresentation(selectedCategory);
 }
 function createPhysicalRepresentation(category) {
-    const categoryElement = document.createElement('span');
+    const categoryElement = document.createElement('input');
     categoryElement.className = 'tag';
-    categoryElement.textContent = category;
+    categoryElement.value = category;
     categoryElement.id = category;
+    categoryElement.readOnly = true;
+    categoryElement.name = 'selected_categories[]';
     categoryElement.addEventListener('click', removeCategory);
 
     document.querySelector("#selected_categories").appendChild(categoryElement);

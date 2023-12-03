@@ -1,3 +1,75 @@
+<?php
+include_once "../../backend/basicRequirementsValidator.php";
+include_once "../../backend/database.php";
+include_once "../../backend/item.php";
+
+session_start();
+if (!isset($_SESSION['guid'])) {
+    header("Location: login.php");
+    die();
+}
+
+$user = queryUser($_SESSION['guid']);
+$errors = array();
+
+if (empty($user->guid)) {
+    header("location:login.php");
+    die();
+}
+
+if (isset($_POST["submit"])) {
+    $item = Item::emptyItem();
+
+    if (!isset($_POST["sell_item_name"])) {
+        $errors["sell_item_name"] = "Name is required field";
+    }
+
+    $item->name = $_POST["sell_item_name"];
+    if (!inputLengthValid($item->name)) {
+        $errors["sell_item_name"] = "Name must be between 3 and 255 characters long";
+    }
+
+    if (!isset($_POST["sell_item_price"])) {
+        $errors["sell_item_price"] = "Price is required field";
+    }
+
+    if (!is_double($_POST["sell_item_price"])) {
+        $errors["sell_item_price"] = "Price must be a number";
+    } else {
+        $item->price = $_POST["sell_item_price"];
+    }
+
+    //TODO: handle picture upload
+    if (!isset($_POST["sell_item_pic"])) {
+        $errors["sell_item_pic"] = "Picture is required field";
+    }
+
+    if (!isset($_POST["selected_categories"])) {
+        $errors["selected_categories"] = "Categories are required field";
+    }
+
+    //ORDER MATTERS HERE xdddddd
+    if (empty($_POST["selected_categories"]) || count($_POST["selected_categories"]) > 4) {
+        $errors["sell_item_categories"] = "You must choose between 1 and 4 categories";
+    } else {
+        $item->categories = $_POST["selected_categories"];
+        foreach ($item->categories as $category) {
+            if (!inputLengthValid($category)) {
+                //TODO: does not exist in db
+                $errors["sell_item_categories"] = "Invalid category";
+            }
+        }
+    }
+
+    if (empty($errors)) {
+        insertItem($item);
+        header("location:../../backend/itemInsertSuccessful.php");
+        die();
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,7 +117,7 @@
                 <label for="categories">Choose <strong>1 - 4</strong> categories</label>
                 <br>
                 <select name="sell_item_categories" id="categories" multiple>
-                    <option tabindex="4" value="Tee"></option>
+                    <option tabindex="4" value="Tee">Tee</option>
                     <option value="sHOES">sHOES</option>
                     <option value="bnig">bnig</option>
                     <option value="pejčka">pejčka</option>
@@ -57,8 +129,7 @@
             <div id="selected_categories"></div>
 
             <div class="button">
-                <input type="submit" value="Insert listing">
-
+                <input type="submit" value="Insert listing" name="submit">
             </div>
 
         </div>
