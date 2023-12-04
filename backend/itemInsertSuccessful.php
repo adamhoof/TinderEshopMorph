@@ -1,5 +1,11 @@
 <?php
+session_start();
 
+if (!isset($_SESSION['guid'])) {
+    // If the user is not logged in, redirect to the login page
+    header("Location: ../frontend/views/login.php");
+    die(); // Make sure to call exit after a redirect
+}
 ?>
 
 <!DOCTYPE html>

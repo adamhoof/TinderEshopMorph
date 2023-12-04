@@ -1,5 +1,10 @@
 <?php
+session_start();
 
+if (!isset($_SESSION['guid'])) {
+    header("Location: ../frontend/views/login.php");
+    die();
+}
 ?>
 
 <!DOCTYPE html>
