@@ -1,5 +1,6 @@
 <?php
 include_once "user.php";
+include_once "item.php";
 function userExists($guid) : bool
 {
     $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
@@ -85,6 +86,43 @@ function updateUser($currentGuid, User $user):void {
 
     $stmt = $conn->prepare("UPDATE users SET guid = ?, password = ?, picture_picture_url = ? WHERE guid = ?");
     $stmt->bind_param("ssss", $user->guid, $passwordHash, $user->pictureUrl, $currentGuid);
+    $stmt->execute();
+
+    $stmt->close();
+    $conn->close();
+}
+
+function categoryExists($category) : bool{
+    $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
+    if ($conn->connect_error) {
+        echo "FUCKBASE";
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    $stmt = $conn->prepare("SELECT category_id FROM categories WHERE name = ?");
+    $stmt->bind_param("s", $category);
+    $stmt->execute();
+
+    $stmt->store_result();
+
+    $categoryExists = $stmt->num_rows > 0;
+
+    $stmt->close();
+    $conn->close();
+
+    return $categoryExists;
+}
+
+function insertItem(Item $item): void
+{
+    $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
+    if ($conn->connect_error) {
+        error_log("Failed cock");
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    $stmt = $conn->prepare("INSERT INTO items (name, price, seller_guid, item_picture_url) VALUES (?,?,?,?)");
+    $stmt->bind_param("sdss", $item->name, $item->price, $item->seller_guid, $item->picUrl);
     $stmt->execute();
 
     $stmt->close();

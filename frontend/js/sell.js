@@ -1,5 +1,10 @@
 let selectedCategories = [];
 let selectedCategoriesCount = 0;
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelector("#categories").addEventListener("click", addCategoryToSelectedCategories);
+});
+
 function addCategoryToSelectedCategories() {
     const selectedCategory = document.querySelector("#categories").value;
 
@@ -37,16 +42,3 @@ function removeCategory(){
     selectedCategoriesCount--;
     selectedCategories = selectedCategories.filter(category => category !== clickedCategory);
 }
-
-document.addEventListener("DOMContentLoaded", function () {
-    // Fetch categories from database and populate
-    fetch("/api/categories")
-        .then(response => response.json())
-        .then(categories => {
-            categories.forEach(category => {
-                document.querySelector("#categories").innerHTML += "<option value='" + category + "'>" + category + "</option>"
-            })
-        })
-    
-    document.querySelector("#categories").addEventListener("click", addCategoryToSelectedCategories);
-});

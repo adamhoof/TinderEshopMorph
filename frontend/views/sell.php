@@ -10,6 +10,7 @@ if (!isset($_SESSION['guid'])) {
 }
 
 $user = queryUser($_SESSION['guid']);
+$item = Item::emptyItem();
 $errors = array();
 
 if (empty($user->guid)) {
@@ -18,7 +19,6 @@ if (empty($user->guid)) {
 }
 
 if (isset($_POST["submit"])) {
-    $item = Item::emptyItem();
 
     if (!isset($_POST["sell_item_name"])) {
         $errors["sell_item_name"] = "Name is required field";
@@ -33,10 +33,11 @@ if (isset($_POST["submit"])) {
         $errors["sell_item_price"] = "Price is required field";
     }
 
-    if (!is_double($_POST["sell_item_price"])) {
+
+    if (!is_numeric($_POST["sell_item_price"])) {
         $errors["sell_item_price"] = "Price must be a number";
     } else {
-        $item->price = $_POST["sell_item_price"];
+        $item->price = floatval($_POST["sell_item_price"]);
     }
 
     //TODO: handle picture upload
@@ -49,19 +50,24 @@ if (isset($_POST["submit"])) {
     }
 
     //ORDER MATTERS HERE xdddddd
-    if (empty($_POST["selected_categories"]) || count($_POST["selected_categories"]) > 4) {
+    if (empty($_POST["selected_categories"]) || !is_array($_POST["selected_categories"]) || count($_POST["selected_categories"]) > 4 ) {
         $errors["sell_item_categories"] = "You must choose between 1 and 4 categories";
     } else {
         $item->categories = $_POST["selected_categories"];
         foreach ($item->categories as $category) {
-            if (!inputLengthValid($category)) {
+            if (!inputLengthValid($category, 5,20) || !categoryExists($category)) {
                 //TODO: does not exist in db
-                $errors["sell_item_categories"] = "Invalid category";
+                $errors["sell_item_categories"] = "$category is invalid category";
             }
         }
     }
 
+    foreach ($errors as $error) {
+        error_log($error);
+    }
     if (empty($errors)) {
+        $item->seller_guid = $user->guid;
+        $item->picUrl = "fucktard";
         insertItem($item);
         header("location:../../backend/itemInsertSuccessful.php");
         die();
@@ -99,12 +105,14 @@ if (isset($_POST["submit"])) {
 
             <div class="input_box">
                 <label for="item_name">Name</label>
-                <input type="text" name="sell_item_name" id="item_name" tabindex="1" autofocus>
+                <input type="text" name="sell_item_name" id="item_name" tabindex="1" autofocus value="<?php echo htmlspecialchars($item->name); ?>">
+                <?php if (isset($errors["sell_item_name"])) {echo "<p class = 'error'> " . htmlspecialchars($errors["sell_item_name"]) . "</p>";} ?>
             </div>
 
             <div class="input_box">
                 <label for="item_price">Price</label>
-                <input type="text" name="sell_item_price" id="item_price" tabindex="2">
+                <input type="text" name="sell_item_price" id="item_price" tabindex="2" value="<?php echo htmlspecialchars($item->price); ?>">
+                <?php if (isset($errors["sell_item_price"])) {echo "<p class = 'error'> " . htmlspecialchars($errors["sell_item_price"]) . "</p>";} ?>
             </div>
 
             <div class="input_box">
@@ -127,6 +135,8 @@ if (isset($_POST["submit"])) {
             </div>
 
             <div id="selected_categories"></div>
+
+            <?php if (isset($errors["sell_item_categories"])) {echo "<p class = 'error'> " . htmlspecialchars($errors["sell_item_categories"]) . "</p>";} ?>
 
             <div class="button">
                 <input type="submit" value="Insert listing" name="submit">
