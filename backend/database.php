@@ -1,7 +1,8 @@
+
 <?php
 include_once "user.php";
 include_once "item.php";
-function userExists($guid) : bool
+function userExists($guid): bool
 {
     $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
     if ($conn->connect_error) {
@@ -24,7 +25,8 @@ function userExists($guid) : bool
     return $userExists;
 }
 
-function queryUser($guid) : User {
+function queryUser($guid): User
+{
     $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
     if ($conn->connect_error) {
         //TODO: notify user?
@@ -51,6 +53,7 @@ function queryUser($guid) : User {
         return User::emptyUser();
     }
 }
+
 function registerUser(User $user): void
 {
     $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
@@ -75,7 +78,8 @@ function registerUser(User $user): void
     $conn->close();
 }
 
-function updateUser($currentGuid, User $user):void {
+function updateUser($currentGuid, User $user): void
+{
     $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
     if ($conn->connect_error) {
         echo "FUCKBASE";
@@ -92,7 +96,8 @@ function updateUser($currentGuid, User $user):void {
     $conn->close();
 }
 
-function categoryExists($category) : bool{
+function categoryExists($category): bool
+{
     $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
     if ($conn->connect_error) {
         echo "FUCKBASE";
@@ -124,7 +129,62 @@ function insertItem(Item $item): void
     $stmt = $conn->prepare("INSERT INTO items (name, price, seller_guid, item_picture_url) VALUES (?,?,?,?)");
     $stmt->bind_param("sdss", $item->name, $item->price, $item->seller_guid, $item->picUrl);
     $stmt->execute();
+    $itemId = $stmt->insert_id;
+    $stmt->close();
+
+    $stmt = $conn->prepare("INSERT INTO item_categories (item_id, category_name) VALUES (?, ?)");
+    foreach ($item->categories as $categoryName) {
+        $stmt->bind_param("is", $itemId, $categoryName);
+        $stmt->execute();
+    }
+
 
     $stmt->close();
     $conn->close();
+}
+
+function fetchItem($buyerGUID): ?Item
+{
+    $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    $stmt = $conn->prepare("
+        SELECT * FROM items
+        WHERE seller_guid != ? 
+        ORDER BY RAND() 
+        LIMIT 1
+    ");
+
+    // Bind parameters and execute
+    $stmt->bind_param("s", $buyerGUID);
+    if ($stmt->execute() === false) {
+        die("Failed to execute statement: " . $stmt->error);
+    }
+
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $item = Item::emptyItem();
+
+    /*error_log(var_export($row, true));*/
+
+    $item->name = $row["name"];
+    $item->price = $row["price"];
+    $item->seller_guid = $row["seller_guid"];
+    $item->picUrl = $row["item_picture_url"];
+    $itemId = $row["item_id"];
+
+    $stmt = $conn->prepare("SELECT category_name FROM item_categories WHERE item_id = ?");
+    $stmt->bind_param("i", $itemId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        array_push($item->categories, $row["category_name"]);
+    }
+/*    error_log(var_export($item, true));*/
+    $stmt->close();
+    $conn->close();
+
+    return $item;
 }
