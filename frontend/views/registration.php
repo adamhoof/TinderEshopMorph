@@ -7,8 +7,8 @@ $user = User::emptyUser();
 
 $errors = array();
 
-if(isset($_POST["submit"])){
-    if(!isset($_POST["guid"])){
+if (isset($_POST["submit"])) {
+    if (!isset($_POST["guid"])) {
         $errors["guid"] = "GUID is required field";
     }
 
@@ -35,19 +35,47 @@ if(isset($_POST["submit"])){
         $errors["password_verify"] = "Password verify must be between 3 and 255 characters long";
     }
 
-    if($user->password !== $passwordVerify){
+    if ($user->password !== $passwordVerify) {
         $errors["password_match"] = "Passwords do not match";
     }
 
-    if(userExists($user->guid)){
+    if (userExists($user->guid)) {
         $errors["guid"] = "User with this GUID already exists";
     }
 
-    if(empty($errors)){
+    if (!isset($_FILES["sell_item_pic"])) {
+        $errors["sell_item_pic"] = "Picture is required field";
+    } elseif ($_FILES["sell_item_pic"]["size"] > 3000000) {
+        $errors["sell_item_pic"] = "Picture must be smaller than 1MB";
+    }
+
+    $fileType = "";
+    if ($_FILES["sell_item_pic"]["error"] == UPLOAD_ERR_NO_FILE) {
+        $errors["sell_item_pic"] = "Picture is required";
+    } else {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $fileType = finfo_file($finfo, $_FILES['sell_item_pic']['tmp_name']);
+
+        $allowedTypes = ["image/png", "image/jpeg", "image/gif", "image/jpg"];
+        if (!in_array($fileType, $allowedTypes)) {
+            $errors["sell_item_pic"] = "Picture must be a png, jpeg, gif or jpg";
+        }
+        finfo_close($finfo);
+    }
+
+    if (empty($errors)) {
         registerUser($user);
+        $userDir = "../../backend/user_pictures/" . $user->guid;
+        if (!file_exists($userDir)) {
+            mkdir($userDir);
+        }
+
+        $newFilePath = $userDir . "/profile_pic.gif";
+        move_uploaded_file($_FILES['sell_item_pic']['tmp_name'], $newFilePath);
         header("location:../../backend/registrationSuccessful.php");
         die();
     }
+
 }
 
 ?>
@@ -66,31 +94,42 @@ if(isset($_POST["submit"])){
 
 <main>
     <div class="title">Register</div>
-    <form method="post" action="registration.php" id="registration_form">
+    <form method="post" action="registration.php" id="registration_form" enctype="multipart/form-data">
 
         <div class="user_details">
 
             <div class="input_box">
-                <span class="details">GUID</span>
-                <label for="guid"></label>
+                <!--<span class="details">GUID</span>-->
+                <label for="guid">GUID</label>
 
-                <input type="text" name="guid" id="guid" tabindex="1" autofocus value="<?php echo htmlspecialchars($user->guid); ?>">
-                <?php if (isset($errors['guid'])) echo "<p class='error'>" . htmlspecialchars($errors['guid']) . "</p>"; ?>            </div>
+                <input type="text" name="guid" id="guid" tabindex="1" autofocus
+                       value="<?php echo htmlspecialchars($user->guid); ?>">
+                <?php if (isset($errors['guid'])) echo "<p class='error'>" . htmlspecialchars($errors['guid']) . "</p>"; ?>
+            </div>
 
             <div class="input_box">
-                <span class="details">Password</span>
-                <label for="password_input"></label>
-                <input id="password_input" type="password" class="input_field" name="password">
+                <!--<span class="details">Password</span>-->
+                <label for="password_input">Password</label>
+                <input id="password_input" type="password" class="input_field" name="password" tabindex="2">
                 <?php if (isset($errors['password'])) echo "<p class='error'>" . htmlspecialchars($errors['password']) . "</p>"; ?>
             </div>
 
             <div class="input_box">
-                <span class="details">Password again</span>
-                <label for="verify_password_input"></label>
-                <input id="verify_password_input" type="password" class="input_field" name="password_verify">
+                <!--<span class="details">Password again</span>-->
+                <label for="verify_password_input">Password again</label>
+                <input id="verify_password_input" type="password" class="input_field" name="password_verify"
+                       tabindex="3">
                 <span id="password_error" class="error"></span>
                 <?php if (isset($errors['password_verify'])) echo "<p class='error'>" . htmlspecialchars($errors['password_verify']) . "</p>"; ?>
                 <?php if (isset($errors['password_match'])) echo "<p class='error'>" . htmlspecialchars($errors['password_match']) . "</p>"; ?>
+            </div>
+
+            <div class="input_box">
+                <label for="profile_pie">Picture</label>
+                <input type="file" name="sell_item_pic" id="item_pic" accept="image/png" tabindex="4">
+                <?php if (isset($errors['sell_item_pic'])) echo "<p class='error'>" . htmlspecialchars($errors['sell_item_pic']) . "</p>"; ?>
+
+
             </div>
 
             <div class="input_box">
@@ -99,7 +138,7 @@ if(isset($_POST["submit"])){
             </div>
 
             <div class="button">
-                <input type="submit" value="Register" name="submit">
+                <input type="submit" value="Register" name="submit" tabindex="5">
             </div>
 
         </div>
