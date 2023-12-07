@@ -28,3 +28,8 @@ main input[type="submit"]:disabled {
 main input[type="submit"]:disabled:hover {
     opacity: 1;
 }
+
+main  form  img {
+    width: 300px;
+    height: 300px;
+}
