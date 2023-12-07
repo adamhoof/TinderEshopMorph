@@ -62,7 +62,7 @@ main .item_details .buttons {
 
 .buttons button {
     width: 100%;
-    padding: 10px 0;
+    padding: 15px 0;
     cursor: pointer;
     background: linear-gradient(135deg, rgba(100, 0, 180, 0.5), rgba(150, 0, 50, 0.9));
     border: none;
@@ -71,6 +71,12 @@ main .item_details .buttons {
     font-weight: 500;
     border-radius: 5px;
     margin: 15px 5px;
+}
+
+#buy_item_button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .buttons button:hover {

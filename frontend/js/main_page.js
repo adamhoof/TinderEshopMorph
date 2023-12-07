@@ -3,6 +3,15 @@ function fetchItem() {
         .then(response => response.json());
 }
 
+function linkItemToUser() {
+
+   /* return fetch("../../backend/linkItemToUser.php")
+        .then(response => response.json());*/
+    return new Promise((resolve, reject) => {
+        resolve();
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const buyButton = document.getElementById('buy_item_button');
     const nextButton = document.getElementById('next_item_button');
@@ -19,7 +28,18 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function buyItem() {
-    // Code for buying the current item
+    const buyButton = document.getElementById('buy_item_button');
+    const originalButtonText = buyButton.innerHTML;
+
+    linkItemToUser().then(r => {
+        buyButton.innerHTML = '<img src="../views/spinnar_unscreen.gif" alt="Loading">';
+        buyButton.disabled = true;
+    });
+    setTimeout(() => {
+        buyButton.innerHTML = originalButtonText;
+        nextItem();
+        buyButton.disabled = false;
+    }, 750);
 }
 
 
