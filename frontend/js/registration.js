@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
             .then(response => response.text())
             .then(data => {
-                if (data === 'exists' || this.value.length < 3 || this.value.length > 255) {
+                if (data === '\nexists' || this.value.length < 3 || this.value.length > 255) {
                     document.getElementById('guid').classList.remove("variable_border_green");
                     document.getElementById('guid').classList.add("variable_border_red");
                 } else {
