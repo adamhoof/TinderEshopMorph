@@ -62,9 +62,6 @@ if (isset($_POST["submit"])) {
         }
     }
 
-    foreach ($errors as $error) {
-        error_log($error);
-    }
     if (empty($errors)) {
         $item->seller_guid = $user->guid;
         $item->picUrl = "fucktard";
