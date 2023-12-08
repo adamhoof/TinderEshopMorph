@@ -1,6 +1,6 @@
 <?php
 
-include_once "item.php";
+include_once "Item.php";
 include_once "database.php";
 
 session_start();

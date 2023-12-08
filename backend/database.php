@@ -1,7 +1,7 @@
 
 <?php
 include_once "user.php";
-include_once "item.php";
+include_once "Item.php";
 function userExists($guid): bool
 {
     $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
@@ -169,14 +169,13 @@ function fetchItem($buyerGUID): ?Item
 
     /*error_log(var_export($row, true));*/
 
+    $item->itemId = $row["item_id"];
     $item->name = $row["name"];
     $item->price = $row["price"];
     $item->seller_guid = $row["seller_guid"];
-    $item->picUrl = $row["item_picture_url"];
-    $itemId = $row["item_id"];
 
     $stmt = $conn->prepare("SELECT category_name FROM item_categories WHERE item_id = ?");
-    $stmt->bind_param("i", $itemId);
+    $stmt->bind_param("i", $item->itemId);
     $stmt->execute();
     $result = $stmt->get_result();
     while ($row = $result->fetch_assoc()) {

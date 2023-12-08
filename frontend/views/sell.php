@@ -1,7 +1,7 @@
 <?php
 include_once "../../backend/basicRequirementsValidator.php";
 include_once "../../backend/database.php";
-include_once "../../backend/item.php";
+include_once "../../backend/Item.php";
 
 session_start();
 if (!isset($_SESSION['guid'])) {
