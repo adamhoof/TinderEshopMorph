@@ -51,7 +51,6 @@ if (isset($_POST["submit"])) {
         $item->categories = $_POST["selected_categories"];
         foreach ($item->categories as $category) {
             if (!inputLengthValid($category, 5,20) || !categoryExists($category)) {
-                //TODO: does not exist in db
                 $errors["sell_item_categories"] = "$category is invalid category";
             }
         }
