@@ -5,11 +5,14 @@ function fetchItem() {
 
 function linkItemToUser() {
 
-   /* return fetch("../../backend/linkItemToUser.php")
-        .then(response => response.json());*/
-    return new Promise((resolve, reject) => {
-        resolve();
-    });
+    const data = {itemId: currentItem.itemId};
+    return fetch("../../backend/linkItemToUser.php", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    }).then(response => response.json());
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -42,22 +45,26 @@ function buyItem() {
     }, 750);
 }
 
+let currentItem;
 
 function nextItem() {
     fetchItem().then(item => {
-        document.getElementById('item_image').src = item.picUrl;
-        document.getElementById('item_name').textContent = item.name;
-        document.getElementById('item_price').textContent = '$' + item.price.toFixed(2);
-        document.getElementById('item_seller').textContent = 'Seller: ' + item.seller_guid;
-        document.getElementById('item_category').textContent = 'Categories: ' + item.categories.join(', ');
+        if (item === null) {
+            document.getElementById('item_name').textContent = 'No more items to buy, come back later!';
+            document.getElementById('item_price').textContent = '';
+            document.getElementById('item_seller').textContent = '';
+            document.getElementById('item_category').textContent = '';
+            return;
+        }
+        currentItem = item;
+        const path = "../../backend/item_pictures/"  + currentItem.itemId + ".gif";
+        document.getElementById('item_image').innerHTML = '<img src= "' + path + '" alt="Item picture">';
+
+
+
+        document.getElementById('item_name').textContent = currentItem.name;
+        document.getElementById('item_price').textContent = '$' + currentItem.price.toFixed(2);
+        document.getElementById('item_seller').textContent = 'Seller: ' + currentItem.seller_guid;
+        document.getElementById('item_category').textContent = 'Categories: ' + currentItem.categories.join(', ');
     });
 }
-
-/*window.onload = function() {
-    /!*maybe logic to remember which item was browsed?
-    items empty - means first page load, perform request first
-    items not empty - means request has been performed, just load the item with saved index
-    *!/
-
-    displayItem(currentItemIndex);
-};*/

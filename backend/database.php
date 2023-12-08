@@ -151,11 +151,12 @@ function fetchItem($buyerGUID): ?Item
     }
 
     $stmt = $conn->prepare("
-        SELECT * FROM items
-        WHERE seller_guid != ? 
-        ORDER BY RAND() 
-        LIMIT 1
-    ");
+    SELECT items.* FROM items
+    LEFT JOIN user_bought_items ON items.item_id = user_bought_items.item_id
+    WHERE seller_guid != ? AND user_bought_items.item_id IS NULL
+    ORDER BY RAND()
+    LIMIT 1
+");
 
     // Bind parameters and execute
     $stmt->bind_param("s", $buyerGUID);
@@ -167,7 +168,9 @@ function fetchItem($buyerGUID): ?Item
     $row = $result->fetch_assoc();
     $item = Item::emptyItem();
 
-    /*error_log(var_export($row, true));*/
+    if ($row === null) {
+        return null;
+    }
 
     $item->itemId = $row["item_id"];
     $item->name = $row["name"];
@@ -186,4 +189,20 @@ function fetchItem($buyerGUID): ?Item
     $conn->close();
 
     return $item;
+}
+
+function linkItemToUser($guid, $itemId): void
+{
+    $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    $stmt = $conn->prepare("INSERT INTO user_bought_items (user_guid, item_id, date_of_purchase) VALUES (?, ?, NOW())");
+
+    $stmt->bind_param("si", $guid, $itemId);
+    $stmt->execute();
+
+    $stmt->close();
+    $conn->close();
 }
