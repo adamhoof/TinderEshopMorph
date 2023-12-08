@@ -33,13 +33,13 @@ function queryUser($guid): User
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $stmt = $conn->prepare("SELECT guid, password, picture_picture_url FROM users WHERE guid = ?");
+    $stmt = $conn->prepare("SELECT guid, password FROM users WHERE guid = ?");
     $stmt->bind_param("s", $guid);
 
     $stmt->execute();
 
     $user = User::emptyUser();
-    $stmt->bind_result($user->guid, $user->password, $user->pictureUrl);
+    $stmt->bind_result($user->guid, $user->password);
 
     if ($stmt->fetch()) {
         // User found, return the User object
@@ -63,10 +63,8 @@ function registerUser(User $user): void
     }
 
     $password_hash = password_hash($user->password, PASSWORD_DEFAULT);
-    $picUrl = "d";
-    $user->pictureUrl = $picUrl;
-    $stmt = $conn->prepare("INSERT INTO users (guid, password, picture_picture_url) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $user->guid, $password_hash, $user->pictureUrl);
+    $stmt = $conn->prepare("INSERT INTO users (guid, password) VALUES (?, ?)");
+    $stmt->bind_param("ss", $user->guid, $password_hash);
 
     if ($stmt->execute()) {
         echo "New record created successfully";
@@ -88,8 +86,8 @@ function updateUser($currentGuid, User $user): void
 
     $passwordHash = password_hash($user->password, PASSWORD_DEFAULT);
 
-    $stmt = $conn->prepare("UPDATE users SET guid = ?, password = ?, picture_picture_url = ? WHERE guid = ?");
-    $stmt->bind_param("ssss", $user->guid, $passwordHash, $user->pictureUrl, $currentGuid);
+    $stmt = $conn->prepare("UPDATE users SET guid = ?, password = ? WHERE guid = ?");
+    $stmt->bind_param("sss", $user->guid, $passwordHash, $currentGuid);
     $stmt->execute();
 
     $stmt->close();
@@ -159,7 +157,7 @@ function fetchItem($buyerGUID): ?Item
     LIMIT 1
 ");
 
-    // Bind parameters and execute
+
     $stmt->bind_param("s", $buyerGUID);
     if ($stmt->execute() === false) {
         die("Failed to execute statement: " . $stmt->error);
@@ -185,7 +183,7 @@ function fetchItem($buyerGUID): ?Item
     while ($row = $result->fetch_assoc()) {
         array_push($item->categories, $row["category_name"]);
     }
-/*    error_log(var_export($item, true));*/
+
     $stmt->close();
     $conn->close();
 
