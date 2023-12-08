@@ -1,3 +1,5 @@
 Dockerfile.mysql
 docker-compose.yml
 .idea
+user_pictures
+item_pictures
