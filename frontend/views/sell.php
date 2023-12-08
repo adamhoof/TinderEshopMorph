@@ -40,11 +40,6 @@ if (isset($_POST["submit"])) {
         $item->price = floatval($_POST["sell_item_price"]);
     }
 
-    //TODO: handle picture upload
-    if (!isset($_POST["sell_item_pic"])) {
-        $errors["sell_item_pic"] = "Picture is required field";
-    }
-
     if (!isset($_POST["selected_categories"])) {
         $errors["selected_categories"] = "Categories are required field";
     }
@@ -62,10 +57,38 @@ if (isset($_POST["submit"])) {
         }
     }
 
+    if (!isset($_FILES["sell_item_pic"])) {
+        $errors["sell_item_pic"] = "Picture is required field";
+    } elseif ($_FILES["sell_item_pic"]["size"] > 3000000) {
+        $errors["sell_item_pic"] = "Picture must be smaller than 1MB";
+    }
+
+    $fileType = "";
+    if ($_FILES["sell_item_pic"]["error"] == UPLOAD_ERR_NO_FILE) {
+        $errors["sell_item_pic"] = "Picture is required";
+    } else {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $fileType = finfo_file($finfo, $_FILES['sell_item_pic']['tmp_name']);
+
+        $allowedTypes = ["image/png", "image/jpeg", "image/gif", "image/jpg"];
+        if (!in_array($fileType, $allowedTypes)) {
+            $errors["sell_item_pic"] = "Picture must be a png, jpeg, gif or jpg";
+        }
+        finfo_close($finfo);
+    }
+
     if (empty($errors)) {
         $item->seller_guid = $user->guid;
-        $item->picUrl = "fucktard";
-        insertItem($item);
+        $itemId = insertItem($item);
+
+        $item_pic_dir = "../../backend/item_pictures/";
+        if (!file_exists($item_pic_dir)) {
+            mkdir($item_pic_dir);
+        }
+
+        $newItemPicPath = $item_pic_dir . $itemId . ".gif";
+        move_uploaded_file($_FILES["sell_item_pic"]["tmp_name"], $newItemPicPath);
+
         header("location:../../backend/itemInsertSuccessful.php");
         die();
     }
@@ -96,7 +119,7 @@ if (isset($_POST["submit"])) {
 <main>
 
     <div class="title">Sell your item!</div>
-    <form method="post" action="sell.php" id="sell_form">
+    <form method="post" action="sell.php" id="sell_form" enctype="multipart/form-data">
 
         <div class="item_details">
 
@@ -115,6 +138,7 @@ if (isset($_POST["submit"])) {
             <div class="input_box">
                 <label for="item_pic">Picture</label>
                 <input type="file" name="sell_item_pic" id="item_pic" accept="image/png" tabindex="3">
+                <?php if (isset($errors['sell_item_pic'])) echo "<p class='error'>" . htmlspecialchars($errors['sell_item_pic']) . "</p>"; ?>
             </div>
 
             <div class="input_box">

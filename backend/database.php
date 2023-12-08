@@ -118,7 +118,7 @@ function categoryExists($category): bool
     return $categoryExists;
 }
 
-function insertItem(Item $item): void
+function insertItem(Item $item): int
 {
     $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
     if ($conn->connect_error) {
@@ -126,8 +126,8 @@ function insertItem(Item $item): void
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $stmt = $conn->prepare("INSERT INTO items (name, price, seller_guid, item_picture_url) VALUES (?,?,?,?)");
-    $stmt->bind_param("sdss", $item->name, $item->price, $item->seller_guid, $item->picUrl);
+    $stmt = $conn->prepare("INSERT INTO items (name, price, seller_guid) VALUES (?,?,?)");
+    $stmt->bind_param("sds", $item->name, $item->price, $item->seller_guid);
     $stmt->execute();
     $itemId = $stmt->insert_id;
     $stmt->close();
@@ -138,9 +138,10 @@ function insertItem(Item $item): void
         $stmt->execute();
     }
 
-
     $stmt->close();
     $conn->close();
+
+    return $itemId;
 }
 
 function fetchItem($buyerGUID): ?Item
