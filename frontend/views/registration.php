@@ -43,35 +43,35 @@ if (isset($_POST["submit"])) {
         $errors["guid"] = "User with this GUID already exists";
     }
 
-    if (!isset($_FILES["sell_item_pic"])) {
-        $errors["sell_item_pic"] = "Picture is required field";
-    } elseif ($_FILES["sell_item_pic"]["size"] > 3000000) {
-        $errors["sell_item_pic"] = "Picture must be smaller than 1MB";
+    if (!isset($_FILES["profile_pic"])) {
+        $errors["profile_pic"] = "Picture is required field";
+    } elseif ($_FILES["profile_pic"]["size"] > 3000000) {
+        $errors["profile_pic"] = "Picture must be smaller than 1MB";
     }
 
     $fileType = "";
-    if ($_FILES["sell_item_pic"]["error"] == UPLOAD_ERR_NO_FILE) {
-        $errors["sell_item_pic"] = "Picture is required";
+    if ($_FILES["profile_pic"]["error"] == UPLOAD_ERR_NO_FILE) {
+        $errors["profile_pic"] = "Picture is required";
     } else {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $fileType = finfo_file($finfo, $_FILES['sell_item_pic']['tmp_name']);
+        $fileType = finfo_file($finfo, $_FILES['profile_pic']['tmp_name']);
 
         $allowedTypes = ["image/png", "image/jpeg", "image/gif", "image/jpg"];
         if (!in_array($fileType, $allowedTypes)) {
-            $errors["sell_item_pic"] = "Picture must be a png, jpeg, gif or jpg";
+            $errors["profile_pic"] = "Picture must be a png, jpeg, gif or jpg";
         }
         finfo_close($finfo);
     }
 
     if (empty($errors)) {
         registerUser($user);
-        $userDir = "../../backend/user_pictures/" . $user->guid;
+        $userDir = "../../backend/user_pictures/";
         if (!file_exists($userDir)) {
             mkdir($userDir);
         }
 
-        $newFilePath = $userDir . "/profile_pic.gif";
-        move_uploaded_file($_FILES['sell_item_pic']['tmp_name'], $newFilePath);
+        $newFilePath = $userDir . $user->guid . ".gif";
+        move_uploaded_file($_FILES['profile_pic']['tmp_name'], $newFilePath);
         header("location:../../backend/registrationSuccessful.php");
         die();
     }
@@ -126,8 +126,8 @@ if (isset($_POST["submit"])) {
 
             <div class="input_box">
                 <label for="profile_pie">Picture</label>
-                <input type="file" name="sell_item_pic" id="item_pic" accept="image/png" tabindex="4">
-                <?php if (isset($errors['sell_item_pic'])) echo "<p class='error'>" . htmlspecialchars($errors['sell_item_pic']) . "</p>"; ?>
+                <input type="file" name="profile_pic" id="profile_pie" accept="image/png" tabindex="4">
+                <?php if (isset($errors['profile_pic'])) echo "<p class='error'>" . htmlspecialchars($errors['profile_pic']) . "</p>"; ?>
 
 
             </div>
