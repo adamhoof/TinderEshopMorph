@@ -3,7 +3,6 @@
 Current database scheme:
 ```mysql
 
-
 CREATE TABLE users
 (
     guid     VARCHAR(255) PRIMARY KEY,
@@ -45,7 +44,9 @@ CREATE TABLE user_bought_items
 );
 
 CREATE INDEX idx_item_categories_item_id ON item_categories (item_id);
-
+CREATE INDEX idx_item_categories_category_name ON item_categories (category_name);
+CREATE INDEX idx_user_bought_items_user_guid ON user_bought_items (user_guid);
+CREATE INDEX idx_user_bought_items_item_id ON user_bought_items (item_id);
 
 ```
 
