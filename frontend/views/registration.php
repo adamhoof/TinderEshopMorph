@@ -64,13 +64,13 @@ if (isset($_POST["submit"])) {
     }
 
     if (empty($errors)) {
-        registerUser($user);
-        $userDir = "../../backend/user_pictures/";
+        $userId = registerUser($user);
+        $userDir = "../../backend/user_pictures/".$userId."/";
         if (!file_exists($userDir)) {
-            mkdir($userDir);
+            mkdir($userDir, recursive: true);
         }
 
-        $newFilePath = $userDir . $user->guid . ".gif";
+        $newFilePath = $userDir . "profile_picture.gif";
         move_uploaded_file($_FILES['profile_pic']['tmp_name'], $newFilePath);
         header("location:../../backend/registrationSuccessful.php");
         die();

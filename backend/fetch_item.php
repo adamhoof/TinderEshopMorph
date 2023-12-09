@@ -10,9 +10,10 @@ if (!isset($_SESSION['guid'])) {
 }
 
 $buyer_guid = $_SESSION['guid'];
+$buyerId = queryUser($buyer_guid)->id;
 
 $item = Item::emptyItem();
-$item = fetchItem($buyer_guid);
+$item = fetchItem($buyerId);
 
 echo json_encode($item);
 

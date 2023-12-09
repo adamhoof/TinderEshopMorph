@@ -33,28 +33,26 @@ function queryUser($guid): User
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $stmt = $conn->prepare("SELECT guid, password FROM users WHERE guid = ?");
+    $stmt = $conn->prepare("SELECT user_id, guid, password FROM users WHERE guid = ?");
     $stmt->bind_param("s", $guid);
 
     $stmt->execute();
 
     $user = User::emptyUser();
-    $stmt->bind_result($user->guid, $user->password);
+    $stmt->bind_result($user->id, $user->guid, $user->password);
 
     if ($stmt->fetch()) {
-        // User found, return the User object
         $stmt->close();
         $conn->close();
         return $user;
     } else {
-        // No user found
         $stmt->close();
         $conn->close();
         return User::emptyUser();
     }
 }
 
-function registerUser(User $user): void
+function registerUser(User $user): int
 {
     $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
     if ($conn->connect_error) {
@@ -72,8 +70,12 @@ function registerUser(User $user): void
         echo "Error: " . $stmt->error;
     }
 
+    $userId = $stmt->insert_id;
+
     $stmt->close();
     $conn->close();
+
+    return $userId;
 }
 
 function updateUser($currentGuid, User $user): void
@@ -124,8 +126,8 @@ function insertItem(Item $item): int
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $stmt = $conn->prepare("INSERT INTO items (name, price, seller_guid) VALUES (?,?,?)");
-    $stmt->bind_param("sds", $item->name, $item->price, $item->seller_guid);
+    $stmt = $conn->prepare("INSERT INTO items (name, price, seller_id) VALUES (?,?,?)");
+    $stmt->bind_param("sdi", $item->name, $item->price, $item->seller_id);
     $stmt->execute();
     $itemId = $stmt->insert_id;
     $stmt->close();
@@ -142,7 +144,7 @@ function insertItem(Item $item): int
     return $itemId;
 }
 
-function fetchItem($buyerGUID): ?Item
+function fetchItem($buyerId): ?Item
 {
     $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
     if ($conn->connect_error) {
@@ -152,13 +154,13 @@ function fetchItem($buyerGUID): ?Item
     $stmt = $conn->prepare("
     SELECT items.* FROM items
     LEFT JOIN user_bought_items ON items.item_id = user_bought_items.item_id
-    WHERE seller_guid != ? AND user_bought_items.item_id IS NULL
+    WHERE items.seller_id != ? AND user_bought_items.item_id IS NULL
     ORDER BY RAND()
     LIMIT 1
 ");
 
 
-    $stmt->bind_param("s", $buyerGUID);
+    $stmt->bind_param("i", $buyerId);
     if ($stmt->execute() === false) {
         die("Failed to execute statement: " . $stmt->error);
     }
@@ -174,7 +176,7 @@ function fetchItem($buyerGUID): ?Item
     $item->itemId = $row["item_id"];
     $item->name = $row["name"];
     $item->price = $row["price"];
-    $item->seller_guid = $row["seller_guid"];
+    $item->seller_id = $row["seller_id"];
 
     $stmt = $conn->prepare("SELECT category_name FROM item_categories WHERE item_id = ?");
     $stmt->bind_param("i", $item->itemId);
@@ -190,16 +192,16 @@ function fetchItem($buyerGUID): ?Item
     return $item;
 }
 
-function linkItemToUser($guid, $itemId): void
+function linkItemToUser($user_id, $itemId): void
 {
     $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $stmt = $conn->prepare("INSERT INTO user_bought_items (user_guid, item_id, date_of_purchase) VALUES (?, ?, NOW())");
+    $stmt = $conn->prepare("INSERT INTO user_bought_items (user_id, item_id, date_of_purchase) VALUES (?, ?, NOW())");
 
-    $stmt->bind_param("si", $guid, $itemId);
+    $stmt->bind_param("ii", $user_id, $itemId);
     $stmt->execute();
 
     $stmt->close();

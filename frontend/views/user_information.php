@@ -47,7 +47,6 @@ if (isset($_POST["submit"])) {
 
     if (empty($errors)) {
         updateUser($user->guid, $updatedUser);
-        rename("../../backend/user_pictures/".$user->guid, "../../backend/user_pictures/".$updatedUser->guid);
         $_SESSION["guid"] = $updatedUser->guid;
         //TODO: change pic location
         header("location:../../backend/userDataUpdateSuccessful.php");
@@ -94,7 +93,7 @@ if (isset($_POST["submit"])) {
             <div class="input_box">
                 <label for="profile_pic">Profile picture</label>
                 <br>
-                <img src="<?php echo htmlspecialchars("../../backend/user_pictures/".$guid.".gif") ?>" alt="profile picture">
+                <img src="<?php echo htmlspecialchars("../../backend/user_pictures/".$user->id."/profile_picture.gif") ?>" alt="profile picture">
                 <input type="file" name="sell_item_pic" id="profile_pic" accept="image/png" class="disableable"
                        tabindex="1" autofocus>
             </div>

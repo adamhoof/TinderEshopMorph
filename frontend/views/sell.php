@@ -45,12 +45,12 @@ if (isset($_POST["submit"])) {
     }
 
     //ORDER MATTERS HERE xdddddd
-    if (empty($_POST["selected_categories"]) || !is_array($_POST["selected_categories"]) || count($_POST["selected_categories"]) > 4 ) {
+    if (empty($_POST["selected_categories"]) || !is_array($_POST["selected_categories"]) || count($_POST["selected_categories"]) > 4) {
         $errors["sell_item_categories"] = "You must choose between 1 and 4 categories";
     } else {
         $item->categories = $_POST["selected_categories"];
         foreach ($item->categories as $category) {
-            if (!inputLengthValid($category, 5,20) || !categoryExists($category)) {
+            if (!inputLengthValid($category, 5, 20) || !categoryExists($category)) {
                 $errors["sell_item_categories"] = "$category is invalid category";
             }
         }
@@ -77,15 +77,15 @@ if (isset($_POST["submit"])) {
     }
 
     if (empty($errors)) {
-        $item->seller_guid = $user->guid;
+        $item->seller_id = $user->id;
         $itemId = insertItem($item);
 
-        $item_pic_dir = "../../backend/item_pictures/";
+        $item_pic_dir = "../../backend/item_pictures/" . "$itemId" . "/";
         if (!file_exists($item_pic_dir)) {
-            mkdir($item_pic_dir);
+            mkdir($item_pic_dir, recursive: true);
         }
 
-        $newItemPicPath = $item_pic_dir . $itemId . ".gif";
+        $newItemPicPath = $item_pic_dir . "item_picture.gif";
         move_uploaded_file($_FILES["sell_item_pic"]["tmp_name"], $newItemPicPath);
 
         header("location:../../backend/itemInsertSuccessful.php");
@@ -124,14 +124,20 @@ if (isset($_POST["submit"])) {
 
             <div class="input_box">
                 <label for="item_name">Name</label>
-                <input type="text" name="sell_item_name" id="item_name" tabindex="1" autofocus value="<?php echo htmlspecialchars($item->name); ?>">
-                <?php if (isset($errors["sell_item_name"])) {echo "<p class = 'error'> " . htmlspecialchars($errors["sell_item_name"]) . "</p>";} ?>
+                <input type="text" name="sell_item_name" id="item_name" tabindex="1" autofocus
+                       value="<?php echo htmlspecialchars($item->name); ?>">
+                <?php if (isset($errors["sell_item_name"])) {
+                    echo "<p class = 'error'> " . htmlspecialchars($errors["sell_item_name"]) . "</p>";
+                } ?>
             </div>
 
             <div class="input_box">
                 <label for="item_price">Price</label>
-                <input type="text" name="sell_item_price" id="item_price" tabindex="2" value="<?php echo htmlspecialchars($item->price); ?>">
-                <?php if (isset($errors["sell_item_price"])) {echo "<p class = 'error'> " . htmlspecialchars($errors["sell_item_price"]) . "</p>";} ?>
+                <input type="text" name="sell_item_price" id="item_price" tabindex="2"
+                       value="<?php echo htmlspecialchars($item->price); ?>">
+                <?php if (isset($errors["sell_item_price"])) {
+                    echo "<p class = 'error'> " . htmlspecialchars($errors["sell_item_price"]) . "</p>";
+                } ?>
             </div>
 
             <div class="input_box">
@@ -156,7 +162,9 @@ if (isset($_POST["submit"])) {
 
             <div id="selected_categories"></div>
 
-            <?php if (isset($errors["sell_item_categories"])) {echo "<p class = 'error'> " . htmlspecialchars($errors["sell_item_categories"]) . "</p>";} ?>
+            <?php if (isset($errors["sell_item_categories"])) {
+                echo "<p class = 'error'> " . htmlspecialchars($errors["sell_item_categories"]) . "</p>";
+            } ?>
 
             <div class="button">
                 <input type="submit" value="Insert listing" name="submit">
