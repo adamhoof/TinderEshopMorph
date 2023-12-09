@@ -37,11 +37,10 @@ function buyItem() {
     const buyButton = document.getElementById('buy_item_button');
     const originalButtonText = buyButton.innerHTML;
 
-    linkItemToUser().then(r => {
+    linkItemToUser();
 
-        buyButton.innerHTML = '<img src="../views/spinnar_unscreen.gif" alt="Loading">';
-        buyButton.disabled = true;
-    });
+    buyButton.innerHTML = '<img src="../views/spinnar_unscreen.gif" alt="Loading">';
+    buyButton.disabled = true;
     setTimeout(() => {
         buyButton.innerHTML = originalButtonText;
         nextItem();
@@ -61,8 +60,7 @@ function nextItem() {
             return;
         }
         currentItem = item;
-        document.getElementById('item_img').src ="../../backend/item_pictures/"  + currentItem.itemId + "/item_picture.gif"
-
+        document.getElementById('item_img').src = "../../backend/item_pictures/" + currentItem.itemId + "/item_picture.gif"
 
 
         document.getElementById('item_name').textContent = currentItem.name;
