@@ -58,8 +58,7 @@ function nextItem() {
             return;
         }
         currentItem = item;
-        const path = "../../backend/item_pictures/"  + currentItem.itemId + "/item_picture.gif";
-        document.getElementById('item_image').innerHTML = '<img src= "' + path + '" alt="Item picture">';
+        document.getElementById('item_img').src ="../../backend/item_pictures/"  + currentItem.itemId + "/item_picture.gif"
 
 
 

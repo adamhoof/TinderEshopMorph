@@ -33,7 +33,7 @@ session_start();
         <div id="item_name" class="item_detail title"></div>
 
         <div id="item_image" class="item_detail">
-            <img src="bord4.png" alt="Item image">
+            <img id="item_img" src="bord4.png" alt="Item image">
         </div>
 
         <div id="item_price" class="item_detail"></div>
