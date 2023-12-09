@@ -31,6 +31,9 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function buyItem() {
+    if (currentItem === undefined) {
+        return;
+    }
     const buyButton = document.getElementById('buy_item_button');
     const originalButtonText = buyButton.innerHTML;
 
