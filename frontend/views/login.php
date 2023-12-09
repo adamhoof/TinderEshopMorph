@@ -1,45 +1,9 @@
 <?php
-include_once "../../backend/basicRequirementsValidator.php";
-include_once "../../backend/database.php";
+include_once "../../backend/loginHandler.php";
 
-session_start();
-
-$user = User::emptyUser();
-$errors = array();
-
-if (isset($_POST["submit"])) {
-    if (!isset($_POST["guid"])) {
-        $errors["guid"] = "GUID is required field";
-    }
-
-    $user->guid = $_POST["guid"];
-    if (!inputLengthValid($user->guid)) {
-        $errors["guid"] = "GUID must be between 3 and 255 characters long";
-    }
-
-    if (!isset($_POST["password"])) {
-        $errors["password"] = "Password is required field";
-    }
-
-    $user->password = $_POST["password"];
-    if (!inputLengthValid($user->password)) {
-        $errors["password"] = "Password must be between 3 and 255 characters long";
-    }
-
-    if (empty($errors)) {
-        $userProfile = queryUser($user->guid);
-        if (empty($userProfile->guid)) {
-            $errors["guid"] = "User with this GUID does not exist";
-        } else {
-            if (password_verify($user->password, $userProfile->password)) {
-                $_SESSION["guid"] = $user->guid;
-                header("location:../../frontend/views/main_page.php");
-            } else {
-                $errors["password"] = "Password is incorrect";
-            }
-        }
-    }
-}
+$result = processLogin();
+$user = $result['user'];
+$errors = $result['errors'];
 ?>
 
 <!DOCTYPE html>
