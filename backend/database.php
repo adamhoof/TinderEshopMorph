@@ -1,4 +1,3 @@
-
 <?php
 include_once "user.php";
 include_once "Item.php";
@@ -206,4 +205,27 @@ function linkItemToUser($user_id, $itemId): void
 
     $stmt->close();
     $conn->close();
+}
+
+function fetchAllCategories(): array
+{
+    $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    $stmt = $conn->prepare("SELECT name FROM categories");
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    $categories = [];
+    while ($row = $result->fetch_assoc()) {
+        array_push($categories, $row["name"]);
+    }
+
+    $stmt->close();
+    $conn->close();
+
+    return $categories;
 }

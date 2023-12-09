@@ -4,17 +4,14 @@ let selectedCategoriesCount = 0;
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelector("#categories").addEventListener("click", addCategoryToSelectedCategories);
 });
-
 function addCategoryToSelectedCategories() {
     const selectedCategory = document.querySelector("#categories").value;
 
     if (selectedCategories.includes(selectedCategory)) {
-        //TODO: already selected error message
         return;
     }
 
     if (selectedCategoriesCount > 3) {
-        //TODO: add error message
         return;
     }
 
@@ -23,6 +20,7 @@ function addCategoryToSelectedCategories() {
 
     createPhysicalRepresentation(selectedCategory);
 }
+
 function createPhysicalRepresentation(category) {
     const categoryElement = document.createElement('input');
     categoryElement.className = 'tag';
@@ -34,7 +32,8 @@ function createPhysicalRepresentation(category) {
 
     document.querySelector("#selected_categories").appendChild(categoryElement);
 }
-function removeCategory(){
+
+function removeCategory() {
     const clickedCategory = this.id;
     const categoryElement = document.getElementById(clickedCategory);
     categoryElement.remove();

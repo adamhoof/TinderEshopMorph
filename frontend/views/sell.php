@@ -151,12 +151,12 @@ if (isset($_POST["submit"])) {
                 <label for="categories">Choose <strong>1 - 4</strong> categories</label>
                 <br>
                 <select name="sell_item_categories" id="categories" multiple>
-                    <option tabindex="4" value="Tee">Tee</option>
-                    <option value="sHOES">sHOES</option>
-                    <option value="bnig">bnig</option>
-                    <option value="pejčka">pejčka</option>
-                    <option value="mrdkoška">mrdkoška</option>
-                    <option value="kacafir">kacafir</option>
+                    <?php
+                    $categories = fetchAllCategories();
+                    foreach ($categories as $category) {
+                        echo "<option name='$category' value='$category'>$category</option>";
+                    }
+                    ?>
                 </select>
             </div>
 
