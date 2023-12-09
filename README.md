@@ -5,6 +5,7 @@ Current database scheme:
 
 CREATE TABLE users
 (
+    user_id INT AUTO_INCREMENT NOT NULL UNIQUE,
     guid     VARCHAR(255) PRIMARY KEY,
     password VARCHAR(255) NOT NULL
 );
