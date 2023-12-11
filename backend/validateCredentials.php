@@ -34,7 +34,8 @@ function validateGuidAndPasswordInput($input): array
     return $errors;
 }
 
-function validatePasswords($input) : array{
+function validatePasswordsInput($input): array
+{
     $errors = array();
 
     if (!isset($input["password_verify"])) {
@@ -45,6 +46,31 @@ function validatePasswords($input) : array{
 
     if ($input["password"] !== $input["password_verify"]) {
         $errors["password_match"] = "Passwords do not match";
+    }
+
+    return $errors;
+}
+
+function validatePictureInput($input): array
+{
+    $errors = array();
+
+    if (!isset($input["profile_pic"])) {
+        $errors["profile_pic"] = "Picture is required field";
+    } elseif ($input["profile_pic"]["size"] > 3000000) {
+        $errors["profile_pic"] = "Picture must be smaller than 1MB";
+    }
+
+    if ($input["profile_pic"]["error"] == UPLOAD_ERR_NO_FILE) {
+        $errors["profile_pic"] = "Picture is required";
+    } else {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $fileType = finfo_file($finfo, $input['profile_pic']['tmp_name']);
+
+        $allowedTypes = ["image/png", "image/jpeg", "image/gif", "image/jpg"];
+        if (!in_array($fileType, $allowedTypes)) {
+            $errors["profile_pic"] = "Picture must be of type png, jpeg, gif or jpg";
+        }
     }
 
     return $errors;

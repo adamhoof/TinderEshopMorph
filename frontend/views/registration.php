@@ -1,82 +1,10 @@
 <?php
 
-include_once "../../backend/basicRequirementsValidator.php";
-include_once "../../backend/database.php";
+include_once "../../backend/registrationHandler.php";
 
-$user = User::emptyUser();
-
-$errors = array();
-
-if (isset($_POST["submit"])) {
-    if (!isset($_POST["guid"])) {
-        $errors["guid"] = "GUID is required field";
-    }
-
-    $user->guid = $_POST["guid"];
-    if (!inputLengthValid($user->guid)) {
-        $errors["guid"] = "GUID must be between 3 and 255 characters long";
-    }
-
-    if (!isset($_POST["password"])) {
-        $errors["password"] = "Password is required field";
-    }
-
-    $user->password = $_POST["password"];
-    if (!inputLengthValid($user->password)) {
-        $errors["password"] = "Password must be between 3 and 255 characters long";
-    }
-
-    if (!isset($_POST["password_verify"])) {
-        $errors["password_verify"] = "Password verify is required field";
-    }
-
-    $passwordVerify = $_POST["password_verify"];
-    if (!inputLengthValid($passwordVerify)) {
-        $errors["password_verify"] = "Password verify must be between 3 and 255 characters long";
-    }
-
-    if ($user->password !== $passwordVerify) {
-        $errors["password_match"] = "Passwords do not match";
-    }
-
-    if (userExists($user->guid)) {
-        $errors["guid"] = "User with this GUID already exists";
-    }
-
-    if (!isset($_FILES["profile_pic"])) {
-        $errors["profile_pic"] = "Picture is required field";
-    } elseif ($_FILES["profile_pic"]["size"] > 3000000) {
-        $errors["profile_pic"] = "Picture must be smaller than 1MB";
-    }
-
-    $fileType = "";
-    if ($_FILES["profile_pic"]["error"] == UPLOAD_ERR_NO_FILE) {
-        $errors["profile_pic"] = "Picture is required";
-    } else {
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $fileType = finfo_file($finfo, $_FILES['profile_pic']['tmp_name']);
-
-        $allowedTypes = ["image/png", "image/jpeg", "image/gif", "image/jpg"];
-        if (!in_array($fileType, $allowedTypes)) {
-            $errors["profile_pic"] = "Picture must be a png, jpeg, gif or jpg";
-        }
-        finfo_close($finfo);
-    }
-
-    if (empty($errors)) {
-        $userId = registerUser($user);
-        $userDir = "../../backend/user_pictures/".$userId."/";
-        if (!file_exists($userDir)) {
-            mkdir($userDir, recursive: true);
-        }
-
-        $newFilePath = $userDir . "profile_picture.gif";
-        move_uploaded_file($_FILES['profile_pic']['tmp_name'], $newFilePath);
-        header("location:../../backend/registrationSuccessful.php");
-        die();
-    }
-
-}
+$result = processRegistration();
+$user = $result['user'];
+$errors = $result['errors'];
 
 ?>
 
@@ -99,7 +27,6 @@ if (isset($_POST["submit"])) {
         <div class="user_details">
 
             <div class="input_box">
-                <!--<span class="details">GUID</span>-->
                 <label for="guid">GUID</label>
 
                 <input type="text" name="guid" id="guid" tabindex="1" autofocus
@@ -108,14 +35,12 @@ if (isset($_POST["submit"])) {
             </div>
 
             <div class="input_box">
-                <!--<span class="details">Password</span>-->
                 <label for="password_input">Password</label>
                 <input id="password_input" type="password" class="input_field" name="password" tabindex="2">
                 <?php if (isset($errors['password'])) echo "<p class='error'>" . htmlspecialchars($errors['password']) . "</p>"; ?>
             </div>
 
             <div class="input_box">
-                <!--<span class="details">Password again</span>-->
                 <label for="verify_password_input">Password again</label>
                 <input id="verify_password_input" type="password" class="input_field" name="password_verify"
                        tabindex="3">
@@ -128,7 +53,6 @@ if (isset($_POST["submit"])) {
                 <label for="profile_pie">Picture</label>
                 <input type="file" name="profile_pic" id="profile_pie" accept="image/png" tabindex="4">
                 <?php if (isset($errors['profile_pic'])) echo "<p class='error'>" . htmlspecialchars($errors['profile_pic']) . "</p>"; ?>
-
 
             </div>
 
@@ -147,6 +71,6 @@ if (isset($_POST["submit"])) {
 
 </main>
 
-
 </body>
+
 </html>
