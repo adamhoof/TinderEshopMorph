@@ -1,10 +1,5 @@
 <?php
 
-include_once "checkLength.php";
-include_once "database.php";
-include_once "inputFieldsVaidator.php";
-include_once "user.php";
-
 if (basename($_SERVER['PHP_SELF']) === basename(__FILE__)) {
     echo '<!DOCTYPE html>';
     echo '<html lang="en">';
@@ -19,6 +14,11 @@ if (basename($_SERVER['PHP_SELF']) === basename(__FILE__)) {
     echo '</html>';
     die();
 };
+
+include_once "checkLength.php";
+include_once "database.php";
+include_once "inputFieldsValidator.php";
+include_once "user.php";
 function processRegistration(): array
 {
     $user = User::emptyUser();
@@ -31,7 +31,7 @@ function processRegistration(): array
         $errors = array_merge(
             validateGuidAndPasswordInput($_POST),
             validatePasswordsInput($_POST),
-            validatePictureInput($_FILES));
+            validatePictureInput($_FILES, "profile_pic"));
 
         if (userExists($user->guid)) {
             $errors["guid"] = "User with this GUID already exists";

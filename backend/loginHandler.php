@@ -1,8 +1,4 @@
 <?php
-include_once "checkLength.php";
-include_once "database.php";
-include_once "user.php";
-include_once "inputFieldsVaidator.php";
 
 if (basename($_SERVER['PHP_SELF']) === basename(__FILE__)) {
     echo '<!DOCTYPE html>';
@@ -18,6 +14,11 @@ if (basename($_SERVER['PHP_SELF']) === basename(__FILE__)) {
     echo '</html>';
     die();
 };
+
+include_once "checkLength.php";
+include_once "database.php";
+include_once "user.php";
+include_once "inputFieldsValidator.php";
 
 session_start();
 function attemptLogin($guid, $password): array

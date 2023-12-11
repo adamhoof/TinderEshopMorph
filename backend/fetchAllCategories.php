@@ -1,8 +1,5 @@
 <?php
 
-include_once "database.php";
-include_once "item.php";
-
 if (basename($_SERVER['PHP_SELF']) === basename(__FILE__)) {
     echo '<!DOCTYPE html>';
     echo '<html lang="en">';
@@ -17,6 +14,9 @@ if (basename($_SERVER['PHP_SELF']) === basename(__FILE__)) {
     echo '</html>';
     die();
 };
+
+include_once "database.php";
+include_once "item.php";
 
 $categories = fetchAllCategories();
 
