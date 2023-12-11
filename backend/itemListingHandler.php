@@ -16,7 +16,7 @@ function validateUser(): User
     $user = queryUser($_SESSION['guid']);
 
     if (empty($user->guid)) {
-        header("location:login.php");
+        header("location:../../frontend/views/login.php");
         die();
     }
 
