@@ -1,58 +1,10 @@
 <?php
-include_once "../../backend/checkLength.php";
-include_once "../../backend/database.php";
 
-session_start();
-// Redirect to login page if the user is not logged in
-if (!isset($_SESSION["guid"])) {
-    header("location:login.php");
-    die();
-}
+include_once "../../backend/updateUserInformationHandler.php";
 
-// Retrieve user data from the database
-$guid = $_SESSION["guid"];
-$user = queryUser($guid);
-$errors = array();
-
-if (empty($user->guid)) {
-    header("location:login.php");
-    die();
-}
-
-if (isset($_POST["submit"])) {
-    $updatedUser = User::emptyUser();
-
-    if (!isset($_POST["guid"])) {
-        $errors["guid"] = "GUID is required field";
-    }
-
-    $updatedUser->guid = $_POST["guid"];
-    if (!inputLengthValid($updatedUser->guid)) {
-        $errors["guid"] = "GUID must be between 3 and 255 characters long";
-    }
-
-    if (!isset($_POST["password"])) {
-        $errors["password"] = "Password is required field";
-    }
-
-    $updatedUser->password = $_POST["password"];
-    if (!inputLengthValid($updatedUser->password)) {
-        $errors["password"] = "Password must be between 3 and 255 characters long";
-    }
-
-    $potentiallyExistingUser = queryUser($updatedUser->guid);
-    if (!empty($potentiallyExistingUser->guid) && $potentiallyExistingUser->guid !== $user->guid) {
-        $errors["guid"] = "User with this GUID already exists";
-    }
-
-    if (empty($errors)) {
-        updateUser($user->guid, $updatedUser);
-        $_SESSION["guid"] = $updatedUser->guid;
-        //TODO: change pic location
-        header("location:../../backend/userDataUpdateSuccessful.php");
-        die();
-    }
-}
+$result = processUserInformationUpdate();
+$user = $result["user"];
+$errors = $result["errors"];
 ?>
 
 <!DOCTYPE html>
@@ -79,7 +31,7 @@ if (isset($_POST["submit"])) {
 
 <main>
 
-    <form method="post" action="userInformation.php">
+    <form method="post" action="userInformation.php" enctype="multipart/form-data">
 
         <div id="edit_enable_box">
             <label for="edit_checkbox">Enable editing</label>
@@ -91,10 +43,10 @@ if (isset($_POST["submit"])) {
         <div class="user_details">
 
             <div class="input_box">
-                <label for="profile_pic">Profile picture</label>
+                <label for="profile_picture">Profile picture</label>
                 <br>
                 <img src="<?php echo htmlspecialchars("../../backend/userPictures/".$user->id."/profile_picture.gif") ?>" alt="profile picture">
-                <input type="file" name="sell_item_pic" id="profile_pic" accept="image/png" class="disableable"
+                <input type="file" name="profile_picture" id="profile_picture" accept="image/png" class="disableable"
                        tabindex="1" autofocus>
             </div>
 

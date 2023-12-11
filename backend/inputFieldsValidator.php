@@ -49,7 +49,7 @@ function validatePictureInput($input, $pictureFieldName): array
         $errors[$pictureFieldName] = "Picture must be smaller than " . $maxPictureSize / 1000000 . "MB";
     } else {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $fileType = finfo_file($finfo, $input['sell_item_pic']['tmp_name']);
+        $fileType = finfo_file($finfo, $input[$pictureFieldName]['tmp_name']);
 
         $allowedTypes = ["image/png", "image/jpeg", "image/gif", "image/jpg"];
         if (!in_array($fileType, $allowedTypes)) {
