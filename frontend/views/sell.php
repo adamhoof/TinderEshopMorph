@@ -1,7 +1,7 @@
 <?php
-include_once "../../backend/basicRequirementsValidator.php";
+include_once "../../backend/checkLength.php";
 include_once "../../backend/database.php";
-include_once "../../backend/Item.php";
+include_once "../../backend/item.php";
 
 session_start();
 if (!isset($_SESSION['guid'])) {
@@ -88,7 +88,7 @@ if (isset($_POST["submit"])) {
         $newItemPicPath = $item_pic_dir . "item_picture.gif";
         move_uploaded_file($_FILES["sell_item_pic"]["tmp_name"], $newItemPicPath);
 
-        header("location:../../backend/itemInsertSuccessful.php");
+        header("location:itemInsertSuccessful.php");
         die();
     }
 }
