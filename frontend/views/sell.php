@@ -1,97 +1,10 @@
 <?php
-include_once "../../backend/checkLength.php";
-include_once "../../backend/database.php";
-include_once "../../backend/item.php";
 
-session_start();
-if (!isset($_SESSION['guid'])) {
-    header("Location: login.php");
-    die();
-}
+include_once "../../backend/itemListingHandler.php";
 
-$user = queryUser($_SESSION['guid']);
-$item = Item::emptyItem();
-$errors = array();
-
-if (empty($user->guid)) {
-    header("location:login.php");
-    die();
-}
-
-if (isset($_POST["submit"])) {
-
-    if (!isset($_POST["sell_item_name"])) {
-        $errors["sell_item_name"] = "Name is required field";
-    }
-
-    $item->name = $_POST["sell_item_name"];
-    if (!inputLengthValid($item->name)) {
-        $errors["sell_item_name"] = "Name must be between 3 and 255 characters long";
-    }
-
-    if (!isset($_POST["sell_item_price"])) {
-        $errors["sell_item_price"] = "Price is required field";
-    }
-
-
-    if (!is_numeric($_POST["sell_item_price"])) {
-        $errors["sell_item_price"] = "Price must be a number";
-    } else {
-        $item->price = floatval($_POST["sell_item_price"]);
-    }
-
-    if (!isset($_POST["selected_categories"])) {
-        $errors["selected_categories"] = "Categories are required field";
-    }
-
-    //ORDER MATTERS HERE xdddddd
-    if (empty($_POST["selected_categories"]) || !is_array($_POST["selected_categories"]) || count($_POST["selected_categories"]) > 4) {
-        $errors["sell_item_categories"] = "You must choose between 1 and 4 categories";
-    } else {
-        $item->categories = $_POST["selected_categories"];
-        foreach ($item->categories as $category) {
-            if (!inputLengthValid($category, 5, 20) || !categoryExists($category)) {
-                $errors["sell_item_categories"] = "$category is invalid category";
-            }
-        }
-    }
-
-    if (!isset($_FILES["sell_item_pic"])) {
-        $errors["sell_item_pic"] = "Picture is required field";
-    } elseif ($_FILES["sell_item_pic"]["size"] > 3000000) {
-        $errors["sell_item_pic"] = "Picture must be smaller than 1MB";
-    }
-
-    $fileType = "";
-    if ($_FILES["sell_item_pic"]["error"] == UPLOAD_ERR_NO_FILE) {
-        $errors["sell_item_pic"] = "Picture is required";
-    } else {
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $fileType = finfo_file($finfo, $_FILES['sell_item_pic']['tmp_name']);
-
-        $allowedTypes = ["image/png", "image/jpeg", "image/gif", "image/jpg"];
-        if (!in_array($fileType, $allowedTypes)) {
-            $errors["sell_item_pic"] = "Picture must be a png, jpeg, gif or jpg";
-        }
-        finfo_close($finfo);
-    }
-
-    if (empty($errors)) {
-        $item->seller_id = $user->id;
-        $itemId = insertItem($item);
-
-        $item_pic_dir = "../../backend/item_pictures/" . "$itemId" . "/";
-        if (!file_exists($item_pic_dir)) {
-            mkdir($item_pic_dir, recursive: true);
-        }
-
-        $newItemPicPath = $item_pic_dir . "item_picture.gif";
-        move_uploaded_file($_FILES["sell_item_pic"]["tmp_name"], $newItemPicPath);
-
-        header("location:itemInsertSuccessful.php");
-        die();
-    }
-}
+$result = processItemListing();
+$item = $result["item"];
+$errors = $result["errors"];
 
 ?>
 
