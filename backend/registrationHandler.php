@@ -39,7 +39,7 @@ function processRegistration(): array
 
         if (empty($errors)) {
             $userId = registerUser($user);
-            $userDir = "../../backend/user_pictures/" . $userId . "/";
+            $userDir = "../../backend/userPictures/" . $userId . "/";
             if (!file_exists($userDir)) {
                 mkdir($userDir, recursive: true);
             }

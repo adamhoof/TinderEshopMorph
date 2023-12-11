@@ -60,11 +60,11 @@ function nextItem() {
             return;
         }
         currentItem = item;
-        document.getElementById('item_img').src = "../../backend/item_pictures/" + currentItem.itemId + "/item_picture.gif"
+        document.getElementById('item_img').src = "../../backend/itemPictures/" + currentItem.itemId + "/item_picture.gif"
 
 
         document.getElementById('item_name').textContent = currentItem.name;
-        document.getElementById('item_price').textContent = '$' + currentItem.price.toFixed(2);
+        document.getElementById('item_price').textContent = '$' + currentItem.price;
         document.getElementById('item_seller').textContent = 'Seller: ' + currentItem.seller_id;
         document.getElementById('item_category').textContent = 'Categories: ' + currentItem.categories.join(', ');
     });

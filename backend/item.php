@@ -14,12 +14,12 @@ class Item
     public int $itemId;
 
     public string $name;
-    public float $price;
+    public string $price;
     public array $categories;
     public int $seller_id;
 
     public static function emptyItem(): Item
     {
-        return new self(-1, "", 0, [], -1);
+        return new self(-1, "", "", [], -1);
     }
 }
