@@ -31,14 +31,14 @@ function attemptLogin($guid, $password): array
     return array();
 }
 
-function processLogin() {
+function processLogin() : array {
     $user = User::emptyUser();
     $errors = array();
 
     if (isset($_POST["submit"])) {
         $user->guid = $_POST["guid"];
 
-        $errors = validateBasicCredentials($_POST);
+        $errors = validateGuidAndPasswordInput($_POST);
 
         if (empty($errors)) {
             $user->password = $_POST["password"];
