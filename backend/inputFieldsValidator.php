@@ -46,7 +46,7 @@ function validatePictureInput($input, $pictureFieldName): array
     } else if ($input[$pictureFieldName]["error"] == UPLOAD_ERR_NO_FILE) {
         $errors[$pictureFieldName] = "Picture is required";
     } elseif ($input[$pictureFieldName]["size"] > $maxPictureSize) {
-        $errors[$pictureFieldName] = "Picture must be smaller than" . $maxPictureSize / 1000000 . "MB";
+        $errors[$pictureFieldName] = "Picture must be smaller than " . $maxPictureSize / 1000000 . "MB";
     } else {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $fileType = finfo_file($finfo, $input['sell_item_pic']['tmp_name']);
