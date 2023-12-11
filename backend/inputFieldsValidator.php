@@ -51,25 +51,26 @@ function validatePasswordsInput($input): array
     return $errors;
 }
 
-function validatePictureInput($input): array
+function validatePictureInput($input, $pictureFieldName): array
 {
     $errors = array();
+    $maxPictureSize = 3000000;
 
-    if (!isset($input["profile_pic"])) {
-        $errors["profile_pic"] = "Picture is required field";
-    } elseif ($input["profile_pic"]["size"] > 3000000) {
-        $errors["profile_pic"] = "Picture must be smaller than 1MB";
+    if (!isset($input[$pictureFieldName])) {
+        $errors[$pictureFieldName] = "Picture is required field";
+    } elseif ($input[$pictureFieldName]["size"] > $maxPictureSize) {
+        $errors[$pictureFieldName] = "Picture must be smaller than" . $maxPictureSize / 1000000 . "MB";
     }
 
-    if ($input["profile_pic"]["error"] == UPLOAD_ERR_NO_FILE) {
-        $errors["profile_pic"] = "Picture is required";
+    if ($input[$pictureFieldName]["error"] == UPLOAD_ERR_NO_FILE) {
+        $errors[$pictureFieldName] = "Picture is required";
     } else {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $fileType = finfo_file($finfo, $input['profile_pic']['tmp_name']);
+        $fileType = finfo_file($finfo, $input[$pictureFieldName]['tmp_name']);
 
         $allowedTypes = ["image/png", "image/jpeg", "image/gif", "image/jpg"];
         if (!in_array($fileType, $allowedTypes)) {
-            $errors["profile_pic"] = "Picture must be of type png, jpeg, gif or jpg";
+            $errors[$pictureFieldName] = "Picture must be of type png, jpeg, gif or jpg";
         }
     }
 
