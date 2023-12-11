@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('guid').addEventListener('input', function() {
         const guid = this.value;
-        fetch('../../backend/check_guid.php', {
+        fetch('../../backend/checkGuid.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
             .then(response => response.text())
             .then(data => {
-                if (data === '\nexists' || this.value.length < 3 || this.value.length > 255) {
+                if (data === 'exists' || this.value.length < 3 || this.value.length > 255) {
                     document.getElementById('guid').classList.remove("variable_border_green");
                     document.getElementById('guid').classList.add("variable_border_red");
                 } else {

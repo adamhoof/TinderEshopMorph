@@ -1,6 +1,5 @@
 <?php
 
-include_once "item.php";
 include_once "database.php";
 
 if (basename($_SERVER['PHP_SELF']) === basename(__FILE__)) {
@@ -18,17 +17,13 @@ if (basename($_SERVER['PHP_SELF']) === basename(__FILE__)) {
     die();
 };
 
-session_start();
-$guid = $_SESSION["guid"];
-$user_id = queryUser($guid)->id;
+if (isset($_POST['guid'])) {
+    $guid = $_POST['guid'];
 
-$content = file_get_contents('php://input');
-$data = json_decode($content, true);
-
-$itemId = $data["itemId"];
-
-linkItemToUser($user_id, $itemId);
-
-echo "done";
-
+    if (userExists($guid)) {
+        echo 'exists';
+    } else {
+        echo 'not_exists';
+    }
+}
 ?>

@@ -1,9 +1,11 @@
 <?php
+
 session_start();
 
 if (!isset($_SESSION['guid'])) {
+    // If the user is not logged in, redirect to the login page
     header("Location: ../frontend/views/login.php");
-    die();
+    die(); // Make sure to call exit after a redirect
 }
 ?>
 
@@ -13,15 +15,14 @@ if (!isset($_SESSION['guid'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration form</title>
-    <link rel="stylesheet" href="../frontend/css/global.css">
+    <link rel="stylesheet" href="../css/global.css">
 </head>
 <body>
 
 <main>
 
-    <h1>Registration successful</h1>
-    <p>Thank you for registering!</p>
-    <a href="../frontend/views/login.php">Login</a>
+    <h1>Update successful</h1>
+    <a href="main_page.php">Main page</a>
 
 </main>
 

@@ -1,5 +1,5 @@
 <?php
-include_once "../../backend/basicRequirementsValidator.php";
+include_once "../../backend/checkLength.php";
 include_once "../../backend/database.php";
 
 session_start();

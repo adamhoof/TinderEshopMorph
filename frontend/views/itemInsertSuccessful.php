@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 if (!isset($_SESSION['guid'])) {
@@ -14,18 +15,17 @@ if (!isset($_SESSION['guid'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration form</title>
-    <link rel="stylesheet" href="../frontend/css/global.css">
+    <link rel="stylesheet" href="../css/global.css">
 </head>
 <body>
 
 <main>
 
-    <h1>Update successful</h1>
-    <a href="../frontend/views/main_page.php">Main page</a>
+    <h1>Item listed successful</h1>
+    <a href="main_page.php">Main page</a>
 
 </main>
 
 
 </body>
 </html>
-

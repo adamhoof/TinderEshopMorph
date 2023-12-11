@@ -1,5 +1,5 @@
 function fetchItem() {
-    return fetch("../../backend/fetch_item.php")
+    return fetch("../../backend/fetchItem.php")
         .then(response => response.json());
 }
 

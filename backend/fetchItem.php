@@ -18,17 +18,19 @@ if (basename($_SERVER['PHP_SELF']) === basename(__FILE__)) {
     die();
 };
 
+
 session_start();
-$guid = $_SESSION["guid"];
-$user_id = queryUser($guid)->id;
+if (!isset($_SESSION['guid'])) {
+    header("Location: login.php");
+    die();
+}
 
-$content = file_get_contents('php://input');
-$data = json_decode($content, true);
+$buyer_guid = $_SESSION['guid'];
+$buyerId = queryUser($buyer_guid)->id;
 
-$itemId = $data["itemId"];
+$item = Item::emptyItem();
+$item = fetchItem($buyerId);
 
-linkItemToUser($user_id, $itemId);
-
-echo "done";
+echo json_encode($item);
 
 ?>
