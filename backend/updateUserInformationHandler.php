@@ -4,6 +4,7 @@ include_once "checkLength.php";
 include_once "database.php";
 include_once "user.php";
 include_once "inputFieldsValidator.php";
+include_once "checkUserValidity.php";
 
 function validateUser(): User
 {
@@ -25,7 +26,7 @@ function validateUser(): User
 
 function processUserInformationUpdate(): array
 {
-    $user = validateUser();
+    $user = checkUserValidity();
     $updatedUser = User::emptyUser();
     $errors = array();
 

@@ -5,27 +5,11 @@ include_once "database.php";
 include_once "item.php";
 include_once "user.php";
 include_once "inputFieldsValidator.php";
-function validateUser(): User
-{
-    session_start();
-    if (!isset($_SESSION['guid'])) {
-        header("Location: login.php");
-        die();
-    }
-
-    $user = queryUser($_SESSION['guid']);
-
-    if (empty($user->guid)) {
-        header("location:../../frontend/views/login.php");
-        die();
-    }
-
-    return $user;
-}
+include_once "checkUserValidity.php";
 
 function processItemListing(): array
 {
-    $user = validateUser();
+    $user = checkUserValidity();
     $item = Item::emptyItem();
     $errors = array();
 
