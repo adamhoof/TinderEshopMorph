@@ -39,7 +39,7 @@ function buyItem() {
 
     linkItemToUser();
 
-    buyButton.innerHTML = '<img src="../views/spinnar_unscreen.gif" alt="Loading">';
+    buyButton.innerHTML = '<img src="../../backend/assets/spinnar_unscreen.gif" alt="Loading">';
     buyButton.disabled = true;
     setTimeout(() => {
         buyButton.innerHTML = originalButtonText;
