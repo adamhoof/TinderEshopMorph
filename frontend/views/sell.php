@@ -103,15 +103,15 @@ if (isset($_POST["submit"])) {
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/form.css">
     <link rel="stylesheet" href="../css/sell.css">
-    <link rel="stylesheet" href="../css/top_nav.css">
+    <link rel="stylesheet" href="../css/topNav.css">
     <script src="../js/sell.js"></script>
 </head>
 <body>
 
 <nav class="top_nav">
-    <a href="main_page.php">Home</a>
-    <a href="user_information.php">User info</a>
-    <a href="transaction_history.php">Transaction history</a>
+    <a href="mainPage.php">Home</a>
+    <a href="userInformation.php">User info</a>
+    <a href="transactionHistory.php">Transaction history</a>
     <a href="logout.php">Logout</a>
 </nav>
 

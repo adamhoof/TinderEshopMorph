@@ -61,25 +61,25 @@ if (isset($_POST["submit"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/top_nav.css">
+    <link rel="stylesheet" href="../css/topNav.css">
     <link rel="stylesheet" href="../css/form.css">
-    <link rel="stylesheet" href="../css/user_information.css">
-    <script src="../js/user_information.js"></script>
+    <link rel="stylesheet" href="../css/userInformation.css">
+    <script src="../js/userInformation.js"></script>
     <title>User info</title>
 </head>
 
 <body>
 
 <nav class="top_nav">
-    <a href="main_page.php">Home</a>
+    <a href="mainPage.php">Home</a>
     <a href="sell.php">Sell</a>
-    <a href="transaction_history.php">Transaction history</a>
+    <a href="transactionHistory.php">Transaction history</a>
     <a href="logout.php">Logout</a>
 </nav>
 
 <main>
 
-    <form method="post" action="user_information.php">
+    <form method="post" action="userInformation.php">
 
         <div id="edit_enable_box">
             <label for="edit_checkbox">Enable editing</label>

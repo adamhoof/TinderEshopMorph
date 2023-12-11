@@ -2,7 +2,7 @@
 include_once "checkLength.php";
 include_once "database.php";
 include_once "user.php";
-include_once "validateCredentials.php";
+include_once "inputFieldsVaidator.php";
 
 if (basename($_SERVER['PHP_SELF']) === basename(__FILE__)) {
     echo '<!DOCTYPE html>';
@@ -45,7 +45,7 @@ function processLogin() : array {
             $errors = attemptLogin($user->guid, $user->password);
             if (empty($errors)) {
                 $_SESSION["guid"] = $user->guid;
-                header("location:../../frontend/views/main_page.php");
+                header("location:../../frontend/views/mainPage.php");
                 exit();
             }
         }

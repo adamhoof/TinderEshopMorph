@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/transaction_history.css">
-    <link rel="stylesheet" href="../css/top_nav.css">
+    <link rel="stylesheet" href="../css/transactionHistory.css">
+    <link rel="stylesheet" href="../css/topNav.css">
     <title>Transaction history</title>
 </head>
 <body>
 
 <nav class="top_nav">
-    <a href="main_page.php">Home</a>
+    <a href="mainPage.php">Home</a>
     <a href="sell.php">Sell</a>
-    <a href="user_information.php">User info</a>
+    <a href="userInformation.php">User info</a>
     <a href="logout.php">Logout</a>
 </nav>
 

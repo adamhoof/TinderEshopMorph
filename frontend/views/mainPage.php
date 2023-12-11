@@ -8,15 +8,15 @@ session_start();
     <meta charset="UTF-8">
     <title>Wantit</title>
     <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/main_page.css">
-    <link rel="stylesheet" href="../css/top_nav.css">
-    <script src="../js/main_page.js"></script>
+    <link rel="stylesheet" href="../css/mainPage.css">
+    <link rel="stylesheet" href="../css/topNav.css">
+    <script src="../js/mainPage.js"></script>
 </head>
 <body>
 <nav class="top_nav">
     <a href="sell.php">Sell</a>
-    <a href="user_information.php">User info</a>
-    <a href="transaction_history.php">Transaction history</a>
+    <a href="userInformation.php">User info</a>
+    <a href="transactionHistory.php">Transaction history</a>
     <?php
     if (isset($_SESSION["guid"])) {
         echo '<a href="logout.php">Logout</a>';

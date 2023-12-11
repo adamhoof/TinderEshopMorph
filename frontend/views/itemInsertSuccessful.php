@@ -22,7 +22,7 @@ if (!isset($_SESSION['guid'])) {
 <main>
 
     <h1>Item listed successful</h1>
-    <a href="main_page.php">Main page</a>
+    <a href="mainPage.php">Main page</a>
 
 </main>
 

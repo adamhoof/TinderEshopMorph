@@ -2,7 +2,7 @@
 
 include_once "checkLength.php";
 include_once "database.php";
-include_once "validateCredentials.php";
+include_once "inputFieldsVaidator.php";
 include_once "user.php";
 
 if (basename($_SERVER['PHP_SELF']) === basename(__FILE__)) {
