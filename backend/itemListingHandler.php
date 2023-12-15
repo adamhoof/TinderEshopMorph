@@ -42,6 +42,3 @@ function processItemListing(): array
     }
     return array('item' => $item, 'errors' => $errors);
 }
-
-?>
-

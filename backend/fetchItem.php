@@ -10,5 +10,3 @@ $item = Item::emptyItem();
 $item = fetchItem($buyerId, $buyerId != -1);
 
 echo json_encode($item);
-
-?>

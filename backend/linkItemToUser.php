@@ -15,5 +15,3 @@ $itemId = $data["itemId"];
 linkItemToUser($user_id, $itemId);
 
 echo "done";
-
-?>

@@ -39,4 +39,3 @@ function processLogin() : array {
 
     return array('user' => $user, 'errors' => $errors);
 }
-?>

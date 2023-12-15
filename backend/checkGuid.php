@@ -11,4 +11,3 @@ if (isset($_POST['guid'])) {
         echo 'not_exists';
     }
 }
-?>
