@@ -1,11 +1,6 @@
 <?php
-
-session_start();
-
-if (!isset($_SESSION['guid'])) {
-    header("Location: login.php");
-    die();
-}
+include_once "../../backend/checkUserValidity.php";
+checkUserValidity();
 ?>
 
 <!DOCTYPE html>
