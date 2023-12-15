@@ -1,7 +1,3 @@
-<?php
-session_start();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,6 +14,7 @@ session_start();
     <a href="userInformation.php">User info</a>
     <a href="transactionHistory.php">Transaction history</a>
     <?php
+    session_start();
     if (isset($_SESSION["guid"])) {
         echo '<a href="logout.php">Logout</a>';
     } else {
