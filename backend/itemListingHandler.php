@@ -30,7 +30,7 @@ function processItemListing(): array
 
             $itemPictureDir = "../../backend/itemPictures/" . "$itemId" . "/";
             if (!file_exists($itemPictureDir)) {
-                mkdir($itemPictureDir, recursive: true);
+                mkdir($itemPictureDir, 0777, true);
             }
 
             $newItemPicPath = $itemPictureDir . "item_picture.gif";

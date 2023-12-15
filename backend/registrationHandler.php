@@ -26,7 +26,7 @@ function processRegistration(): array
             $userId = registerUser($user);
             $userDir = "../../backend/userPictures/" . $userId . "/";
             if (!file_exists($userDir)) {
-                mkdir($userDir, recursive: true);
+                mkdir($userDir, 0777, true);
             }
             $profilePicturePath = $userDir . "profile_picture.gif";
             move_uploaded_file($_FILES['profile_pic']['tmp_name'], $profilePicturePath);
