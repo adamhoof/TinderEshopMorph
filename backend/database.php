@@ -63,11 +63,7 @@ function registerUser(User $user): int
     $stmt = $conn->prepare("INSERT INTO users (guid, password) VALUES (?, ?)");
     $stmt->bind_param("ss", $user->guid, $password_hash);
 
-    if ($stmt->execute()) {
-        echo "New record created successfully";
-    } else {
-        echo "Error: " . $stmt->error;
-    }
+   $stmt->execute();
 
     $userId = $stmt->insert_id;
 
