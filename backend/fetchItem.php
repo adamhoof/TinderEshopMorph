@@ -3,17 +3,11 @@
 include_once "item.php";
 include_once "database.php";
 
-session_start();
-if (!isset($_SESSION['guid'])) {
-    header("Location: login.php");
-    die();
-}
-
-$buyer_guid = $_SESSION['guid'];
+$buyer_guid = $_SESSION['guid'] ?? null;
 $buyerId = queryUser($buyer_guid)->id;
 
 $item = Item::emptyItem();
-$item = fetchItem($buyerId);
+$item = fetchItem($buyerId, $buyerId != -1);
 
 echo json_encode($item);
 

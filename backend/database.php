@@ -146,23 +146,29 @@ function insertItem(Item $item): int
     return $itemId;
 }
 
-function fetchItem($buyerId): ?Item
+function fetchItem($buyerId, $userBased = false): ?Item
 {
     $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
     if ($conn->connect_error) {
         die($conn->connect_error);
     }
 
-    $stmt = $conn->prepare("
+    if ($userBased) {
+        $stmt = $conn->prepare("
     SELECT items.* FROM items
     LEFT JOIN user_bought_items ON items.item_id = user_bought_items.item_id
     WHERE items.seller_id != ? AND user_bought_items.item_id IS NULL
     ORDER BY RAND()
-    LIMIT 1
-");
+    LIMIT 1");
+        $stmt->bind_param("i", $buyerId);
+    } else {
+        $stmt = $conn->prepare("SELECT items.* FROM items
+    LEFT JOIN user_bought_items ON items.item_id = user_bought_items.item_id
+    WHERE user_bought_items.item_id IS NULL
+    ORDER BY RAND()
+    LIMIT 1");
+    }
 
-
-    $stmt->bind_param("i", $buyerId);
     if ($stmt->execute() === false) {
         die("Failed to execute statement: " . $stmt->error);
     }
