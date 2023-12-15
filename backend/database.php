@@ -3,12 +3,7 @@
 include_once "user.php";
 include_once "item.php";
 include_once "transaction.php";
-
-const HOSTNAME = "localhost";
-const USERNAME = "myuser";
-const PASSWORD = "mypassword";
-const DATABASE = "mydatabase";
-const PORT = "3306";
+include_once "db_credentials.php";
 function userExists($guid): bool
 {
     $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
