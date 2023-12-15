@@ -1,9 +1,9 @@
 <?php
 
 include_once "database.php";
+session_start();
 function checkUserValidity(): User
 {
-    session_start();
     if (!isset($_SESSION['guid'])) {
         header("Location: ../../frontend/views/login.php");
         die();
