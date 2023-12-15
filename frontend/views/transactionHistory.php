@@ -1,3 +1,16 @@
+<?php
+
+include_once "../../backend/checkUserValidity.php";
+include_once "../../backend/paginationHandler.php";
+
+$user = checkUserValidity();
+$pageCount = getPageCount($user, 5);
+$requestedPage = $_GET["page"] ?? null;
+if (!is_numeric($requestedPage) || $requestedPage < 1 || $requestedPage > $pageCount) {
+    $requestedPage = 1;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,50 +39,26 @@
             <thead>
             <tr>
                 <th>Name</th>
-                <th>Seller GUID</th>
+                <th>Seller ID</th>
                 <th>Price</th>
                 <th>Date</th>
             </tr>
             </thead>
 
             <tbody>
-
-            <tr>
-                <td>qwertzuiopasdfghjklyxcvbnmaaaaa 1</td>
-                <td>123456789</td>
-                <td>1000</td>
-                <td>2020-11-11</td>
-            </tr>
-            <tr>
-                <td>qwertzuiopasdfghjklyxcvbnmaaaaa 1</td>
-                <td>123456789</td>
-                <td>1000</td>
-                <td>2020-11-11</td>
-            </tr>
-            <tr>
-                <td>qwertzuiopasdfghjklyxcvbnmaaaaa 1</td>
-                <td>123456789</td>
-                <td>1000</td>
-                <td>2020-11-11</td>
-            </tr>
-            <tr>
-                <td>qwertzuiopasdfghjklyxcvbnmaaaaa 1</td>
-                <td>123456789</td>
-                <td>100955929829829829821981298180</td>
-                <td>2020-11-11</td>
-            </tr>
-            <tr>
-                <td>qwertzuiopasdfghjklyxcvbnmaaaaa 1</td>
-                <td>123456789</td>
-                <td>1000</td>
-                <td>2020-11-11</td>
-            </tr>
-
+            <?php
+            generatePaginatedData($user, $requestedPage);
+            ?>
             </tbody>
 
         </table>
 
     </div>
+
+    <form action="transactionHistory.php" method="get">
+        <?php
+        generatePagination($pageCount, $requestedPage);
+        ?>
 
 </main>
 

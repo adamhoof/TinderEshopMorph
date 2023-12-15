@@ -34,6 +34,37 @@ th, td {
 
 }
 
+#pagination_wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    margin-top: 20px;
+}
+#pagination_wrapper input {
+    text-align: center;
+    width: 30px;
+    height: 25px;
+    border-radius: 10px;
+    border: 3px solid rgba(100, 0, 180, 0.5);
+    margin: 0 10px;
+    background: rgba(150, 0, 50, 0.5);
+}
+
+#pagination_wrapper input:hover {
+    background-color: #dddddd;
+}
+
+#pagination_wrapper input.active {
+    background-color: rgb(200, 200, 200);
+}
+
+#pagination_wrapper input.active:hover {
+    background-color: #dddddd;
+}
+
+
 @media screen and (max-width: 500px) {
     th, td {
         font-size: 3vw;

@@ -2,11 +2,18 @@
 
 include_once "user.php";
 include_once "item.php";
+include_once "transaction.php";
+
+const HOSTNAME = "localhost";
+const USERNAME = "myuser";
+const PASSWORD = "mypassword";
+const DATABASE = "mydatabase";
+const PORT = "3306";
 function userExists($guid): bool
 {
-    $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
+    $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
     if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+        die($conn->connect_error);
     }
 
     $stmt = $conn->prepare("SELECT guid FROM users WHERE guid = ?");
@@ -26,10 +33,9 @@ function userExists($guid): bool
 
 function queryUser($guid): User
 {
-    $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
+    $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
     if ($conn->connect_error) {
-        //TODO: notify user?
-        die("Connection failed: " . $conn->connect_error);
+        die($conn->connect_error);
     }
 
     $stmt = $conn->prepare("SELECT user_id, guid, password FROM users WHERE guid = ?");
@@ -53,10 +59,9 @@ function queryUser($guid): User
 
 function registerUser(User $user): int
 {
-    $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
+    $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
     if ($conn->connect_error) {
-        echo "FUCKBASE";
-        die("Connection failed: " . $conn->connect_error);
+        die($conn->connect_error);
     }
 
     $password_hash = password_hash($user->password, PASSWORD_DEFAULT);
@@ -79,10 +84,9 @@ function registerUser(User $user): int
 
 function updateUser($currentGuid, User $user): void
 {
-    $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
+    $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
     if ($conn->connect_error) {
-        echo "FUCKBASE";
-        die("Connection failed: " . $conn->connect_error);
+        die($conn->connect_error);
     }
 
     $passwordHash = password_hash($user->password, PASSWORD_DEFAULT);
@@ -97,10 +101,9 @@ function updateUser($currentGuid, User $user): void
 
 function categoryExists($category): bool
 {
-    $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
+    $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
     if ($conn->connect_error) {
-        echo "FUCKBASE";
-        die("Connection failed: " . $conn->connect_error);
+        die($conn->connect_error);
     }
 
     $stmt = $conn->prepare("SELECT category_id FROM categories WHERE name = ?");
@@ -119,10 +122,10 @@ function categoryExists($category): bool
 
 function insertItem(Item $item): int
 {
-    $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
+    $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
     if ($conn->connect_error) {
         error_log("Failed cock");
-        die("Connection failed: " . $conn->connect_error);
+        die($conn->connect_error);
     }
 
     $stmt = $conn->prepare("INSERT INTO items (name, price, seller_id) VALUES (?,?,?)");
@@ -145,9 +148,9 @@ function insertItem(Item $item): int
 
 function fetchItem($buyerId): ?Item
 {
-    $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
+    $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
     if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+        die($conn->connect_error);
     }
 
     $stmt = $conn->prepare("
@@ -182,7 +185,7 @@ function fetchItem($buyerId): ?Item
     $stmt->execute();
     $result = $stmt->get_result();
     while ($row = $result->fetch_assoc()) {
-        array_push($item->categories, $row["category_name"]);
+        $item->categories[] = $row["category_name"];
     }
 
     $stmt->close();
@@ -193,9 +196,9 @@ function fetchItem($buyerId): ?Item
 
 function linkItemToUser($user_id, $itemId): void
 {
-    $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
+    $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
     if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+        die($conn->connect_error);
     }
 
     $stmt = $conn->prepare("INSERT INTO user_bought_items (user_id, item_id, date_of_purchase) VALUES (?, ?, NOW())");
@@ -209,9 +212,9 @@ function linkItemToUser($user_id, $itemId): void
 
 function fetchAllCategories(): array
 {
-    $conn = new mysqli("localhost", "myuser", "mypassword", "mydatabase", "3306");
+    $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
     if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+        die($conn->connect_error);
     }
 
     $stmt = $conn->prepare("SELECT name FROM categories");
@@ -221,11 +224,73 @@ function fetchAllCategories(): array
 
     $categories = [];
     while ($row = $result->fetch_assoc()) {
-        array_push($categories, $row["name"]);
+        $categories[] = $row["name"];
     }
 
     $stmt->close();
     $conn->close();
 
     return $categories;
+}
+
+function fetchUserTransactions(User $user, $numberOfRows, $startIndex): array
+{
+    $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
+    if ($conn->connect_error) {
+        die($conn->connect_error);
+    }
+
+    $stmt = $conn->prepare("
+    SELECT items.seller_id, items.name, items.price, ubi.date_of_purchase 
+    FROM items JOIN user_bought_items ubi ON items.item_id = ubi.item_id 
+    WHERE user_id = ?
+    ORDER BY ubi.date_of_purchase DESC
+    LIMIT ? OFFSET ?"
+    );
+
+    $stmt->bind_param("iii", $user->id, $numberOfRows, $startIndex);
+    $stmt->execute();
+    $stmt->store_result();
+
+    $transactions = [];
+
+    $sellerId = $name = $price = $date = null;
+    $stmt->bind_result($sellerId, $name, $price, $date);
+
+    while ($stmt->fetch()) {
+        $dateObject = new DateTime($date);
+        $date = $dateObject->format("d-m-Y");
+        $transaction = new Transaction($name, $sellerId, $price, $date);
+        $transactions[] = $transaction;
+    }
+
+    $stmt->close();
+    $conn->close();
+
+    return $transactions;
+}
+
+function fetchAllUserTransactionsCount(User $user): int
+{
+    $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
+    if ($conn->connect_error) {
+        die($conn->connect_error);
+    }
+
+    $stmt = $conn->prepare("
+    SELECT COUNT(*) 
+    FROM items JOIN user_bought_items ubi ON items.item_id = ubi.item_id 
+    WHERE user_id = ?");
+
+    $stmt->bind_param("i", $user->id);
+    $stmt->execute();
+    $stmt->store_result();
+
+    $stmt->bind_result($count);
+    $stmt->fetch();
+
+    $stmt->close();
+    $conn->close();
+
+    return $count;
 }
