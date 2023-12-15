@@ -51,7 +51,7 @@ $errors = $result['errors'];
 
             <div class="input_box">
                 <label for="profile_pie">Picture</label>
-                <input type="file" name="profile_pic" id="profile_pie" accept="image/png" tabindex="4">
+                <input type="file" name="profile_pic" id="profile_pie" accept="image/png, image/jpg, image/jpeg, image/gif" tabindex="4">
                 <?php if (isset($errors['profile_pic'])) echo "<p class='error'>" . htmlspecialchars($errors['profile_pic']) . "</p>"; ?>
 
             </div>
