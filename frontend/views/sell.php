@@ -66,8 +66,11 @@ $errors = $result["errors"];
                 <select name="sell_item_categories" id="categories" multiple>
                     <?php
                     $categories = fetchAllCategories();
-                    foreach ($categories as $category) {
-                        echo "<option name='$category' value='$category'>$category</option>";
+                    $numCategories = count($categories);
+                    for ($i = 0; $i < $numCategories; $i++) {
+                        $category = htmlspecialchars($categories[$i]);
+                        $tabIndex = $i + 4;
+                        echo "<option name='$category' value='$category' tabindex='$tabIndex'>$category</option>";
                     }
                     ?>
                 </select>
