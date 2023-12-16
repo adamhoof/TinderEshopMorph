@@ -10,6 +10,7 @@ body {
 
 main {
     max-width: 700px;
+    min-width: 350px;
     width: 100%;
     background: floralwhite;
     padding: 25px 30px;

@@ -46,7 +46,7 @@ $errors = $result["errors"];
                 <label for="profile_picture">Profile picture</label>
                 <br>
                 <img src="<?php echo htmlspecialchars("../../backend/userPictures/".$user->id."/profile_picture.gif") ?>" alt="profile picture">
-                <input type="file" name="profile_picture" id="profile_picture" accept="image/png" class="disableable"
+                <input type="file" name="profile_picture" id="profile_picture" accept="image/png, image/jpg, image/jpeg, image/gif" class="disableable"
                        tabindex="1" autofocus>
             </div>
 
