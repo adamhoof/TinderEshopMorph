@@ -39,7 +39,7 @@ function validatePasswordsInput($input): array
 function validatePictureInput($input, $pictureFieldName): array
 {
     $errors = array();
-    $maxPictureSize = 3000000;
+    $maxPictureSize = 5000000;
 
     if (!isset($input[$pictureFieldName])) {
         $errors[$pictureFieldName] = "Picture is required field";
@@ -47,6 +47,8 @@ function validatePictureInput($input, $pictureFieldName): array
         $errors[$pictureFieldName] = "Picture is required";
     } elseif ($input[$pictureFieldName]["size"] > $maxPictureSize) {
         $errors[$pictureFieldName] = "Picture must be smaller than " . $maxPictureSize / 1000000 . "MB";
+    } else if ($input[$pictureFieldName]["error"] != UPLOAD_ERR_OK) {
+        $errors[$pictureFieldName] = "Picture upload failed";
     } else {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $fileType = finfo_file($finfo, $input[$pictureFieldName]['tmp_name']);
@@ -58,6 +60,7 @@ function validatePictureInput($input, $pictureFieldName): array
         finfo_close($finfo);
     }
 
+    error_log(var_export($errors, true));
     return $errors;
 }
 

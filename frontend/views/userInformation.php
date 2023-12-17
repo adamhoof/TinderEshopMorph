@@ -49,6 +49,8 @@ $errors = $result["errors"];
                 <img src="<?php echo htmlspecialchars("../../backend/userPictures/".$user->id."/profile_picture.gif") ?>" alt="profile picture">
                 <input type="file" name="profile_picture" id="profile_picture" accept="image/png, image/jpg, image/jpeg, image/gif" class="disableable"
                        tabindex="1" autofocus>
+                <?php if (isset($errors["profile_picture"])) echo "<p class='error'>" . htmlspecialchars($errors["profile_picture"]) . "</p>"; ?>
+
             </div>
 
             <div class="input_box">
