@@ -75,3 +75,25 @@ form .variable_border_green {
     border-radius: 5px;
     outline: none;
 }
+
+@media print{
+
+    main {
+        border: 2px solid black;
+    }
+
+    form .button input {
+        width: 100%;
+        padding: 10px 0;
+        color: white;
+        font-size: 18px;
+        font-weight: 500;
+        border-radius: 5px;
+        margin: 15px 0;
+        border: 1px solid black;
+    }
+
+    .input_box {
+        width: 100%;
+    }
+}

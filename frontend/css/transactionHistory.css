@@ -62,3 +62,19 @@ th, td {
     }
 
 }
+
+@media print {
+    main {
+        border: 3px solid black;
+    }
+
+    #pagination_wrapper input {
+        text-align: center;
+        width: 30px;
+        height: 25px;
+        border-radius: 10px;
+        border: 3px solid black;
+        margin: 0 10px;
+        background: black;
+    }
+}

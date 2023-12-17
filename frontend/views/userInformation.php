@@ -42,7 +42,8 @@ $errors = $result["errors"];
 
         <div class="user_details">
 
-            <div class="input_box">
+            <div id="print_image_placeholder">Image placeholder</div>
+            <div class="input_box" id="profile_picture_input">
                 <label for="profile_picture">Profile picture</label>
                 <br>
                 <img src="<?php echo htmlspecialchars("../../backend/userPictures/".$user->id."/profile_picture.gif") ?>" alt="profile picture">
