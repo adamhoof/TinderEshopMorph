@@ -137,7 +137,7 @@ function insertItem(Item $item): int
     return $itemId;
 }
 
-function fetchItem($buyerId, $userBased = false): ?Item
+function fetchItem($buyerId, $userBased): ?Item
 {
     $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
     if ($conn->connect_error) {

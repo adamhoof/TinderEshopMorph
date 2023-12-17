@@ -2,11 +2,11 @@
 
 include_once "item.php";
 include_once "database.php";
+include_once "checkUserValidity.php";
 
-$buyer_guid = $_SESSION['guid'] ?? null;
-$buyerId = queryUser($buyer_guid)->id;
+$user = checkUserValidity();
 
 $item = Item::emptyItem();
-$item = fetchItem($buyerId, $buyerId != -1);
+$item = fetchItem($user->id, $user->id != -1);
 
 echo json_encode($item);
