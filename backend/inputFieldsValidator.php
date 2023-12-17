@@ -64,14 +64,14 @@ function validatePictureInput($input, $pictureFieldName): array
     return $errors;
 }
 
-function validateItemNameInput($input): array
+function validateItemNameInput($input, $minItemNameLength = 3, $maxItemNameLength = 20): array
 {
     $errors = array();
 
     if (!isset($input["sell_item_name"])) {
         $errors["sell_item_name"] = "Name is required field";
-    } elseif (!inputLengthValid($input["sell_item_name"])) {
-        $errors["sell_item_name"] = "Name must be between 3 and 255 characters long";
+    } elseif (!inputLengthValid($input["sell_item_name"], $minItemNameLength, $maxItemNameLength)) {
+        $errors["sell_item_name"] = "Name must be between" . $minItemNameLength . "and" . $maxItemNameLength . "characters long";
     }
 
     return $errors;
@@ -104,7 +104,7 @@ function validateItemSelectedCategories($input, $item): array
     } else {
         $item->categories = $input["selected_categories"];
         foreach ($item->categories as $category) {
-            if (!inputLengthValid($category, 5, 20) || !categoryExists($category)) {
+            if (!inputLengthValid($category, 4, 20) || !categoryExists($category)) {
                 $errors["sell_item_categories"] = "$category is invalid category";
             }
         }
