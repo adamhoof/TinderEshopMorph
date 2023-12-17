@@ -1,6 +1,12 @@
 function fetchItem() {
     return fetch("../../backend/fetchItem.php")
-        .then(response => response.json());
+        .then(response => {
+            return response.json().catch(() => null); // Handle case where JSON parsing fails
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+            return null;
+        });
 }
 
 function linkItemToUser() {
