@@ -59,7 +59,7 @@ if (!is_numeric($requestedPage) || $requestedPage < 1 || $requestedPage > $pageC
         <?php
         generatePagination($pageCount, $requestedPage);
         ?>
-
+    </form>
 </main>
 
 </body>

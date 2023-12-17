@@ -53,7 +53,7 @@ $errors = $result["errors"];
 
             <div class="input_box">
                 <label for="guid">GUID</label>
-                <input type="text" name="guid" id="guid" autofocus class="disableable" tabindex="2"
+                <input type="text" name="guid" id="guid" class="disableable" tabindex="2"
                        value="<?php echo htmlspecialchars($user->guid); ?>">
                 <?php if (isset($errors["guid"])) echo "<p class='error'>" . htmlspecialchars($errors["guid"]) . "</p>"; ?>
             </div>
