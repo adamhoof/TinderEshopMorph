@@ -31,6 +31,7 @@ session_start();
 
         <div id="item_name" class="item_detail title"></div>
 
+        <div id="print_image_placeholder">Image placeholder</div>
         <div id="item_image" class="item_detail">
             <img id="item_img" src="bord4.png" alt="Item image">
         </div>

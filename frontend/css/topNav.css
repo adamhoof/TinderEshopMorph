@@ -18,20 +18,8 @@
     text-decoration: none;
 }
 
-body {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, rgba(100, 0, 180, 0.5), rgba(150, 0, 50, 0.9));
-    padding: 100px;
-}
-
-main {
-    max-width: 700px;
-    width: 100%;
-    background: floralwhite;
-    padding: 25px 30px;
-    border-radius: 7px;
+@media print {
+    .top_nav {
+        display: none;
+    }
 }
