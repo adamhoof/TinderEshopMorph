@@ -70,7 +70,7 @@ $errors = $result["errors"];
                     for ($i = 0; $i < $numCategories; $i++) {
                         $category = htmlspecialchars($categories[$i]);
                         $tabIndex = $i + 4;
-                        echo "<option id='$category' value='$category' tabindex='$tabIndex'>$category</option>";
+                        echo "<option id='$i' value='$category' tabindex='$tabIndex'>$category</option>";
                     }
                     ?>
                 </select>
