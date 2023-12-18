@@ -25,12 +25,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const buyButton = document.getElementById('buy_item_button');
     const nextButton = document.getElementById('next_item_button');
 
-    buyButton.addEventListener('click', function () {
-        buyItem();
-    });
-
     nextButton.addEventListener('click', function () {
         nextItem();
+    });
+
+    if (buyButton === null) {
+        nextItem();
+        return;
+    }
+
+    buyButton.addEventListener('click', function () {
+        buyItem();
     });
 
     nextItem();

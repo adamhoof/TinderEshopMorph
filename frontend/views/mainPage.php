@@ -43,9 +43,11 @@ session_start();
         <div id="item_category" class="item_detail"></div>
 
         <div class="buttons">
-            <button id="buy_item_button">Buy</button>
-
             <button id="next_item_button">Next</button>
+
+            <?php if (isset($_SESSION["guid"])) {
+                echo '<button id="buy_item_button">Buy</button>';
+            } ?>
         </div>
 
     </div>
