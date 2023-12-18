@@ -5,7 +5,7 @@ include_once "../../backend/paginationHandler.php";
 
 $user = checkUserValidity();
 $pageCount = getPageCount($user, 5);
-$requestedPage = $_GET["page"] ?? null;
+$requestedPage = $_GET["page"] ?? 1;
 if (!is_numeric($requestedPage) || $requestedPage < 1 || $requestedPage > $pageCount) {
     $requestedPage = 1;
 }

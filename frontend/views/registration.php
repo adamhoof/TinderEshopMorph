@@ -56,6 +56,8 @@ $errors = $result['errors'];
 
             </div>
 
+            <p id="required_fields">All fields are required</p>
+
             <div class="input_box">
                 <span class="details">Already have an account? <a href="login.php">Login</a></span>
 

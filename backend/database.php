@@ -1,10 +1,21 @@
 <?php
 
+/**
+ * Database interaction functions.
+ */
+
 include_once "user.php";
 include_once "item.php";
 include_once "transaction.php";
-include_once "db_credentials.php";
-function userExists($guid): bool
+include_once "dbCredentials.php";
+
+/**
+ * Checks if a user exists by GUID.
+ *
+ * @param string $guid User's GUID.
+ * @return bool True if user exists, false otherwise.
+ */
+function userExists(string $guid): bool
 {
     $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
     if ($conn->connect_error) {
@@ -26,7 +37,13 @@ function userExists($guid): bool
     return $userExists;
 }
 
-function queryUser($guid): User
+/**
+ * Retrieves user information by GUID.
+ *
+ * @param string $guid User's GUID.
+ * @return User User object.
+ */
+function queryUser(string $guid): User
 {
     $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
     if ($conn->connect_error) {
@@ -52,6 +69,12 @@ function queryUser($guid): User
     }
 }
 
+/**
+ * Registers a new user.
+ *
+ * @param User $user User object to register.
+ * @return int User ID of the newly created user.
+ */
 function registerUser(User $user): int
 {
     $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
@@ -73,7 +96,13 @@ function registerUser(User $user): int
     return $userId;
 }
 
-function updateUser($currentGuid, User $user): void
+/**
+ * Updates user information.
+ *
+ * @param string $currentGuid Current user GUID.
+ * @param User $user User object with new data.
+ */
+function updateUser(string $currentGuid, User $user): void
 {
     $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
     if ($conn->connect_error) {
@@ -90,7 +119,13 @@ function updateUser($currentGuid, User $user): void
     $conn->close();
 }
 
-function categoryExists($category): bool
+/**
+ * Checks if a category exists.
+ *
+ * @param string $category Category name.
+ * @return bool True if category exists, false otherwise.
+ */
+function categoryExists(string $category): bool
 {
     $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
     if ($conn->connect_error) {
@@ -111,6 +146,12 @@ function categoryExists($category): bool
     return $categoryExists;
 }
 
+/**
+ * Inserts a new item.
+ *
+ * @param Item $item Item object to insert.
+ * @return int Item ID of the inserted item.
+ */
 function insertItem(Item $item): int
 {
     $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
@@ -137,7 +178,16 @@ function insertItem(Item $item): int
     return $itemId;
 }
 
-function fetchItem($buyerId, $userBased): ?Item
+/**
+ * Fetches random item if the user viewing it is not registered OR
+ * Fetches item based on conditions that are registered user dependant
+ * - do not fetch an item that has been already bought by someone else or the current buyer
+ *
+ * @param int $buyerId Buyer's user ID.
+ * @param bool $userBased Flag for user-based fetching.
+ * @return Item|null Item or null.
+ */
+function fetchItem(int $buyerId, bool $userBased): ?Item
 {
     $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
     if ($conn->connect_error) {
@@ -191,7 +241,13 @@ function fetchItem($buyerId, $userBased): ?Item
     return $item;
 }
 
-function linkItemToUser($user_id, $itemId): void
+/**
+ * Links an item to a user.
+ *
+ * @param int $userId User ID.
+ * @param int $itemId Item ID.
+ */
+function linkItemToUser(int $userId, int $itemId): void
 {
     $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
     if ($conn->connect_error) {
@@ -200,13 +256,18 @@ function linkItemToUser($user_id, $itemId): void
 
     $stmt = $conn->prepare("INSERT INTO user_bought_items (user_id, item_id, date_of_purchase) VALUES (?, ?, NOW())");
 
-    $stmt->bind_param("ii", $user_id, $itemId);
+    $stmt->bind_param("ii", $userId, $itemId);
     $stmt->execute();
 
     $stmt->close();
     $conn->close();
 }
 
+/**
+ * Fetches all categories.
+ *
+ * @return array Array of category names.
+ */
 function fetchAllCategories(): array
 {
     $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
@@ -230,7 +291,15 @@ function fetchAllCategories(): array
     return $categories;
 }
 
-function fetchUserTransactions(User $user, $numberOfRows, $startIndex): array
+/**
+ * Fetches a specific numberOfRows offset by startIndex of user's transactions.
+ *
+ * @param User $user User object.
+ * @param int $numberOfRows Number of rows to fetch.
+ * @param int $startIndex Starting index for fetch.
+ * @return array Array of Transactions.
+ */
+function fetchUserTransactions(User $user, int $numberOfRows, int $startIndex): array
 {
     $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);
     if ($conn->connect_error) {
@@ -251,7 +320,8 @@ function fetchUserTransactions(User $user, $numberOfRows, $startIndex): array
 
     $transactions = [];
 
-    $sellerId = $name = $price = $date = null;
+    $sellerId = $name = $date = null;
+    $price = 0;
     $stmt->bind_result($sellerId, $name, $price, $date);
 
     while ($stmt->fetch()) {
@@ -267,6 +337,12 @@ function fetchUserTransactions(User $user, $numberOfRows, $startIndex): array
     return $transactions;
 }
 
+/**
+ * Counts all transactions made by a user.
+ *
+ * @param User $user User object.
+ * @return int Count of transactions.
+ */
 function fetchAllUserTransactionsCount(User $user): int
 {
     $conn = new mysqli(HOSTNAME, USERNAME, PASSWORD, DATABASE, PORT);

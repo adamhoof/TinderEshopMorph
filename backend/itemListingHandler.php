@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Handles the item listing process.
+ *
+ * This script includes necessary files for item validation and listing.
+ * It defines a function to process the listing of an item, including validation
+ * and saving item details.
+ */
+
 include_once "checkLength.php";
 include_once "database.php";
 include_once "item.php";
@@ -7,6 +15,14 @@ include_once "user.php";
 include_once "inputFieldsValidator.php";
 include_once "checkUserValidity.php";
 
+/**
+ * Processes the listing of an item.
+ *
+ * Validates item details from POST request, saves the item if valid, and returns
+ * the item and any validation errors.
+ *
+ * @return array Array containing the item and any validation errors.
+ */
 function processItemListing(): array
 {
     $user = checkUserValidity();

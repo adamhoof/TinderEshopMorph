@@ -1,9 +1,28 @@
 <?php
 
+/**
+ * Handles user registration process.
+ *
+ * This script includes necessary files for input validation and user registration.
+ * It defines a function to process user registration, including validation, saving user details,
+ * and handling profile picture upload.
+ */
+
+
 include_once "checkLength.php";
 include_once "database.php";
 include_once "inputFieldsValidator.php";
 include_once "user.php";
+
+/**
+ * Processes the user registration form submission.
+ *
+ * Validates input data, registers the user if validation passes, uploads the profile picture,
+ * and redirects to a success page. Returns an array with user data and any validation errors.
+ *
+ * @return array Array containing the user object and any validation errors.
+ */
+
 function processRegistration(): array
 {
     $user = User::emptyUser();

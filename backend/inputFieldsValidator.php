@@ -1,6 +1,16 @@
 <?php
 
-function validateGuidAndPasswordInput($input): array
+/**
+ * Functions for validating various input fields.
+ */
+
+/**
+ * Validates GUID and password input.
+ *
+ * @param array $input Input array containing GUID and password.
+ * @return array Array of error messages.
+ */
+function validateGuidAndPasswordInput(array $input): array
 {
     $errors = array();
 
@@ -19,7 +29,13 @@ function validateGuidAndPasswordInput($input): array
     return $errors;
 }
 
-function validatePasswordsInput($input): array
+/**
+ * Validates password input and match.
+ *
+ * @param array $input Input array containing passwords.
+ * @return array Array of error messages.
+ */
+function validatePasswordsInput(array $input): array
 {
     $errors = array();
 
@@ -36,7 +52,14 @@ function validatePasswordsInput($input): array
     return $errors;
 }
 
-function validatePictureInput($input, $pictureFieldName): array
+/**
+ * Validates picture input.
+ *
+ * @param array $input Input array containing picture file data.
+ * @param string $pictureFieldName The field name of the picture.
+ * @return array Array of error messages.
+ */
+function validatePictureInput(array $input, string $pictureFieldName): array
 {
     $errors = array();
     $maxPictureSize = 5000000;
@@ -64,7 +87,15 @@ function validatePictureInput($input, $pictureFieldName): array
     return $errors;
 }
 
-function validateItemNameInput($input, $minItemNameLength = 3, $maxItemNameLength = 20): array
+/**
+ * Validates item name input.
+ *
+ * @param array $input Input array containing item name.
+ * @param int $minItemNameLength Minimum length of item name.
+ * @param int $maxItemNameLength Maximum length of item name.
+ * @return array Array of error messages.
+ */
+function validateItemNameInput(array $input, int $minItemNameLength = 3, int $maxItemNameLength = 20): array
 {
     $errors = array();
 
@@ -77,7 +108,13 @@ function validateItemNameInput($input, $minItemNameLength = 3, $maxItemNameLengt
     return $errors;
 }
 
-function validateItemPriceInput($input): array
+/**
+ * Validates item price input.
+ *
+ * @param array $input Input array containing item price.
+ * @return array Array of error messages.
+ */
+function validateItemPriceInput(array $input): array
 {
     $errors = array();
 
@@ -91,7 +128,14 @@ function validateItemPriceInput($input): array
     return $errors;
 }
 
-function validateItemSelectedCategories($input, $item): array
+/**
+ * Validates selected categories for an item.
+ *
+ * @param array $input Input array containing selected categories.
+ * @param Item $item Item object to validate against.
+ * @return array Array of error messages.
+ */
+function validateItemSelectedCategories(array $input, Item $item): array
 {
     $errors = array();
 

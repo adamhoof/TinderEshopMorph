@@ -3,4 +3,5 @@ docker-compose.yml
 .idea
 userPictures
 itemPictures
-db_credentials.php
+backend/dbCredentials.php
+.phpdoc

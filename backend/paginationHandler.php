@@ -1,14 +1,36 @@
 <?php
 
+/**
+ * Handles pagination for displaying user transactions.
+ *
+ * This script includes functions for calculating page counts,
+ * generating pagination controls, and displaying paginated data.
+ */
+
 include_once "database.php";
 include_once "checkUserValidity.php";
 include_once "user.php";
 include_once "fetchUserTransactionsPage.php";
-function getPageCount(User $user, $pageSize): int
+
+/**
+ * Calculates the total number of pages for transactions.
+ *
+ * @param User $user The user whose transactions are counted.
+ * @param int $pageSize The number of transactions per page.
+ * @return int Total number of pages.
+ */
+function getPageCount(User $user, int $pageSize): int
 {
     return ceil(fetchAllUserTransactionsCount($user) / $pageSize);
 }
-function generatePagination($pageCount, $requestedPage): void
+
+/**
+ * Generates pagination controls.
+ *
+ * @param int $pageCount Total number of pages.
+ * @param int $requestedPage The current page number.
+ */
+function generatePagination(int $pageCount, int $requestedPage): void
 {
     $start = 1;
     if ($pageCount <= 7) {
@@ -17,12 +39,12 @@ function generatePagination($pageCount, $requestedPage): void
         $end = 7;
         $pageNeighborhood = 3;
 
-        if (isset($requestedPage) && $requestedPage > $pageNeighborhood) {
+        if ($requestedPage > $pageNeighborhood) {
             $mid = $requestedPage;
             $start = $mid - $pageNeighborhood;
             $end = $mid + $pageNeighborhood;
         }
-        if (isset($requestedPage) && $requestedPage >= $pageCount - $pageNeighborhood) {
+        if ($requestedPage >= $pageCount - $pageNeighborhood) {
             $start = $pageCount - 6;
             $end = $pageCount;
         }
@@ -38,7 +60,14 @@ function generatePagination($pageCount, $requestedPage): void
     echo '</div>';
 }
 
-function generatePaginatedData(User $user, $requestedPage): void
+/**
+ * Displays paginated transaction data for a user.
+ *
+ * @param User $user The user whose transactions are displayed.
+ * @param int $requestedPage The current page number.
+ */
+
+function generatePaginatedData(User $user, int $requestedPage): void
 {
     $numRows = 5;
     $transactionsPage = getTransactionHistoryPage($user, $numRows, $requestedPage);

@@ -1,28 +1,28 @@
 <?php
 
+/**
+ * Handles the user information update process.
+ *
+ * This script includes necessary files for input validation and user information updating.
+ * It defines a function to process updates to user information, including validation,
+ * saving updated user details, and handling profile picture updates.
+ */
+
 include_once "checkLength.php";
 include_once "database.php";
 include_once "user.php";
 include_once "inputFieldsValidator.php";
 include_once "checkUserValidity.php";
 
-function validateUser(): User
-{
-    session_start();
-    if (!isset($_SESSION['guid'])) {
-        header("Location: login.php");
-        die();
-    }
-
-    $user = queryUser($_SESSION['guid']);
-
-    if (empty($user->guid)) {
-        header("location:../../frontend/views/login.php");
-        die();
-    }
-
-    return $user;
-}
+/**
+ * Processes the user information update form submission.
+ *
+ * Validates input data, updates the user's information if validation passes,
+ * uploads the new profile picture, and redirects to a success page.
+ * Returns an array with user data and any validation errors.
+ *
+ * @return array Array containing the user object and any validation errors.
+ */
 
 function processUserInformationUpdate(): array
 {
@@ -46,7 +46,7 @@ function processUserInformationUpdate(): array
             $_SESSION["guid"] = $updatedUser->guid;
             $userDir = "../../backend/userPictures/" . $user->id. "/";
             if (!file_exists($userDir)) {
-                mkdir($userDir, recursive: true);
+                mkdir($userDir, 0777, true);
             }
 
             $profilePicturePath = $userDir . "profile_picture.gif";
