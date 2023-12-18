@@ -5,3 +5,4 @@ userPictures
 itemPictures
 backend/dbCredentials.php
 .phpdoc
+db_credentials.php
