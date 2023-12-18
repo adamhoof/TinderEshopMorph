@@ -12,7 +12,7 @@ $errors = $result["errors"];
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sell Item</title>
+    <title>Sell</title>
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/form.css">
     <link rel="stylesheet" href="../css/sell.css">
