@@ -76,6 +76,11 @@ form .variable_border_green {
     outline: none;
 }
 
+#required_fields {
+    font-size: 10px;
+    margin: 10px 0;
+}
+
 @media print{
 
     main {
