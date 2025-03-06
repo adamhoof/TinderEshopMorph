@@ -1,52 +1,45 @@
-# zwa-semester-work
+# What is it?
 
-Current database scheme:
-```mysql
+A web application that combines features from popular platforms like TikTok, Vinted, and Tinder. It allows users to browse, buy, and sell items in a swipe-based interface, providing an engaging and efficient shopping experience.
 
-CREATE TABLE users
-(
-    user_id  INT AUTO_INCREMENT PRIMARY KEY,
-    guid     VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL
-);
+## Core Functionality
 
-CREATE TABLE categories
-(
-    category_id INT AUTO_INCREMENT PRIMARY KEY,
-    name        VARCHAR(255) UNIQUE NOT NULL
-);
+- **Guest Browsing**: Unregistered users can view items listed by others and have the option to register to unlock the full feature set.
 
-CREATE TABLE items
-(
-    item_id   INT AUTO_INCREMENT PRIMARY KEY,
-    name      VARCHAR(255)   NOT NULL,
-    price     DECIMAL(10, 2) NOT NULL,
-    seller_id INT            NOT NULL,
-    FOREIGN KEY (seller_id) REFERENCES users (user_id)
-);
+- **User Registration and Authentication**: Users can create an account and log in to access personalized features.
 
-CREATE TABLE item_categories
-(
-    item_id       INT          NOT NULL,
-    category_name VARCHAR(255) NOT NULL,
-    PRIMARY KEY (item_id, category_name),
-    FOREIGN KEY (item_id) REFERENCES items (item_id),
-    FOREIGN KEY (category_name) REFERENCES categories (name)
-);
+- **Item Swiping**: Registered users can browse items in a swipe-based interface, choosing to buy items instantly or skip them, similar to the Tinder experience.
 
-CREATE TABLE user_bought_items
-(
-    user_id          INT  NOT NULL,
-    item_id          INT NOT NULL,
-    date_of_purchase DATE NOT NULL,
-    PRIMARY KEY (user_id, item_id),
-    FOREIGN KEY (user_id) REFERENCES users (user_id),
-    FOREIGN KEY (item_id) REFERENCES items (item_id)
-);
+- **Item Listing**: Users can list their own items for sale, including uploading images and providing descriptions.
 
-CREATE INDEX idx_item_categories_item_id ON item_categories (item_id);
-CREATE INDEX idx_item_categories_category_name ON item_categories (category_name);
-CREATE INDEX idx_user_bought_items_item_id ON user_bought_items (item_id);
+- **Transaction History**: Users have access to a transaction history to track their purchases and sales.
 
-```
+- **Profile Management**: Users can update their personal information and manage their profiles.
 
+## Technical Overview
+
+The application is structured into three main directories:
+
+- **Backend**: Contains PHP source files for API endpoints, database interactions, and utility scripts, as well as directories for assets and user-uploaded images.
+
+- **Frontend**: Includes CSS stylesheets, JavaScript files for client-side logic, and viewable pages with PHP logic to ensure dynamic page loading.
+
+- **Documentation**: Provides product documentation describing top-level functionality and UI, phpDocumentator-generated documentation detailing all PHP source code, and programmer documentation containing deep technical information.
+
+## Database Schema
+
+The MySQL database consists of the following tables:
+
+- **users**: Stores user information, including unique IDs, GUIDs, and passwords.
+
+- **categories**: Contains different categories that can be associated with items.
+
+- **items**: Records items for sale, including item IDs, names, prices, and references to the seller.
+
+- **item_categories**: Defines the relationship between items and categories.
+
+- **user_bought_items**: Tracks purchases, recording the buyer's user ID, the purchased item's ID, and the date of purchase.
+
+Indexes are created on relevant columns to ensure efficient querying.
+
+For more detailed information, please refer to the respective [documentation](https://github.com/adamhoof/TinderEshopMorph/tree/master/docs).
